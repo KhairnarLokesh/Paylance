@@ -2,6 +2,7 @@ import dbConnect from '@/lib/mongodb';
 import Project from '@/models/Project';
 import User from '@/models/User';
 import Notification from '@/models/Notification';
+import { sendNewProjectNotification } from '@/lib/emailService';
 
 export async function GET(req) {
     try {
@@ -34,7 +35,10 @@ export async function POST(req) {
             escrowAmount: 0,
         });
 
-        // Notify matching freelancers
+        // Get all freelancers (for email notification)
+        const allFreelancers = await User.find({ role: 'freelancer' });
+
+        // Notify matching freelancers (in-app notification)
         const matchingFreelancers = await User.find({
             role: 'freelancer',
             skills: { $in: projectData.skills }
@@ -49,6 +53,19 @@ export async function POST(req) {
 
         if (notifications.length > 0) {
             await Notification.insertMany(notifications);
+        }
+
+        // Send email notification to ALL freelancers
+        try {
+            const emailResult = await sendNewProjectNotification(project, allFreelancers);
+            if (emailResult.success) {
+                console.log(`Email notification sent to ${emailResult.sent} freelancers`);
+            } else {
+                console.error(`Failed to send project notifications: ${emailResult.error}`);
+            }
+        } catch (emailError) {
+            // Log error but don't fail the request
+            console.error('Failed to send email notifications:', emailError);
         }
 
         return Response.json(project);

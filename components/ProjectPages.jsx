@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useApp } from "@/context/AppContext";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -30,6 +30,7 @@ import {
   ExternalLink,
   MessageSquare,
   AlertCircle,
+  Loader2,
 } from "lucide-react";
 
 const categories = [
@@ -724,6 +725,7 @@ export function ProjectDetailPage() {
   });
   const [milestoneSubmission, setMilestoneSubmission] = useState("");
   const [selectedMilestone, setSelectedMilestone] = useState(null);
+  const [processingMilestone, setProcessingMilestone] = useState(null);
 
   if (!project) {
     return (
@@ -741,7 +743,26 @@ export function ProjectDetailPage() {
   const isAssignedFreelancer = project.assignedTo === userId || project.assignedTo?._id === userId;
   const hasApplied = project.applications.some((a) => a.freelancerId === userId || a.freelancerId?._id === userId);
   const myApplication = project.applications.find((a) => a.freelancerId === userId || a.freelancerId?._id === userId);
-  const assignedFreelancer = project.assignedTo ? getUserById(project.assignedTo?._id || project.assignedTo) : null;
+  // const assignedFreelancer = project.assignedTo ? getUserById(project.assignedTo?._id || project.assignedTo) : null;
+  const [assignedFreelancer, setAssignedFreelancer] = useState(null);
+
+  useEffect(() => {
+    const fetchAssignedUser = async () => {
+      if (project.assignedTo) {
+        try {
+          const id = project.assignedTo?._id || project.assignedTo;
+          const user = await getUserById(id);
+          setAssignedFreelancer(user);
+        } catch (error) {
+          console.error("Failed to fetch assigned freelancer", error);
+        }
+      } else {
+        setAssignedFreelancer(null);
+      }
+    };
+    fetchAssignedUser();
+  }, [project.assignedTo, getUserById]);
+
 
   const handleApply = () => {
     applyToProject(project._id, applicationData);
@@ -753,6 +774,12 @@ export function ProjectDetailPage() {
     submitMilestone(project._id, milestoneId, milestoneSubmission);
     setMilestoneSubmission("");
     setSelectedMilestone(null);
+  };
+
+  const handleApproveMilestone = async (milestoneId) => {
+    setProcessingMilestone(milestoneId);
+    await approveMilestone(project._id, milestoneId);
+    setProcessingMilestone(null);
   };
 
   const handleStartChat = () => {
@@ -838,25 +865,33 @@ export function ProjectDetailPage() {
       </Card>
 
       {/* Assigned Freelancer (for client) */}
-      {isClient && assignedFreelancer && (
+      {isClient && project.assignedTo && (
         <Card className="border-border">
           <CardHeader>
             <CardTitle className="text-lg">Assigned Freelancer</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="flex items-center gap-4">
-              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10">
-                <span className="text-lg font-bold text-primary">
-                  {assignedFreelancer.name.charAt(0)}
-                </span>
+            {assignedFreelancer ? (
+              <div className="flex items-center gap-4">
+                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10">
+                  <span className="text-lg font-bold text-primary">
+                    {assignedFreelancer.name?.charAt(0) || '?'}
+                  </span>
+                </div>
+                <div>
+                  <p className="font-semibold text-card-foreground">{assignedFreelancer.name}</p>
+                  <p className="text-sm text-muted-foreground">{assignedFreelancer.email}</p>
+                </div>
               </div>
-              <div>
-                <p className="font-semibold text-card-foreground">{assignedFreelancer.name}</p>
-                <p className="text-sm text-muted-foreground">{assignedFreelancer.email}</p>
+            ) : (
+              <div className="flex items-center gap-2 text-muted-foreground">
+                <Loader2 className="h-4 w-4 animate-spin" />
+                <span>Loading freelancer details...</span>
               </div>
-            </div>
+            )}
           </CardContent>
         </Card>
+
       )}
 
       {/* Escrow (for client) */}
@@ -993,9 +1028,14 @@ export function ProjectDetailPage() {
                 <div className="mt-4 flex gap-2">
                   <Button
                     size="sm"
-                    onClick={() => approveMilestone(project._id, milestone._id)}
+                    disabled={processingMilestone === milestone._id}
+                    onClick={() => handleApproveMilestone(milestone._id)}
                   >
-                    <CheckCircle className="mr-2 h-4 w-4" />
+                    {processingMilestone === milestone._id ? (
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    ) : (
+                      <CheckCircle className="mr-2 h-4 w-4" />
+                    )}
                     Approve & Release ${milestone.amount}
                   </Button>
                 </div>
@@ -1014,85 +1054,13 @@ export function ProjectDetailPage() {
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            {project.applications.map((app) => {
-              const freelancer = getUserById(app.freelancerId);
-              return (
-                <div
-                  key={app.freelancerId}
-                  className="rounded-lg border border-border p-4"
-                >
-                  <div className="flex items-start justify-between">
-                    <div className="flex items-start gap-4">
-                      <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10">
-                        <span className="text-lg font-bold text-primary">
-                          {freelancer?.name.charAt(0)}
-                        </span>
-                      </div>
-                      <div>
-                        <p className="font-semibold text-card-foreground">
-                          {freelancer?.name}
-                        </p>
-                        <div className="flex flex-wrap gap-1 mt-1">
-                          {freelancer?.skills?.slice(0, 4).map((skill) => (
-                            <Badge key={skill} variant="outline" className="text-xs">
-                              {skill}
-                            </Badge>
-                          ))}
-                        </div>
-                        <p className="mt-2 text-sm text-muted-foreground">
-                          {app.coverLetter}
-                        </p>
-                        {app.demoUrl && (
-                          <a
-                            href={app.demoUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="mt-2 inline-flex items-center gap-1 text-sm text-primary hover:underline"
-                            onClick={(e) => e.stopPropagation()}
-                          >
-                            <ExternalLink className="h-3 w-3" />
-                            View Demo Project
-                          </a>
-                        )}
-                      </div>
-                    </div>
-                    {app.status === "pending" ? (
-                      <div className="flex gap-2">
-                        <Button
-                          size="sm"
-                          onClick={() =>
-                            reviewApplication(project._id, app.freelancerId, "approved")
-                          }
-                        >
-                          <CheckCircle className="mr-1 h-4 w-4" />
-                          Approve
-                        </Button>
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          onClick={() =>
-                            reviewApplication(project._id, app.freelancerId, "rejected")
-                          }
-                        >
-                          <XCircle className="mr-1 h-4 w-4" />
-                          Reject
-                        </Button>
-                      </div>
-                    ) : (
-                      <Badge
-                        className={
-                          app.status === "approved"
-                            ? "bg-success text-success-foreground"
-                            : "bg-destructive text-destructive-foreground"
-                        }
-                      >
-                        {app.status}
-                      </Badge>
-                    )}
-                  </div>
-                </div>
-              );
-            })}
+            {project.applications.map((app) => (
+              <ApplicationCard
+                key={app.freelancerId}
+                app={app}
+                project={project}
+              />
+            ))}
           </CardContent>
         </Card>
       )}
@@ -1152,6 +1120,104 @@ export function ProjectDetailPage() {
           </Card>
         </div>
       )}
+    </div>
+  );
+}
+
+function ApplicationCard({ app, project }) {
+  const { getUserById, reviewApplication } = useApp();
+  const [freelancer, setFreelancer] = useState(null);
+
+  // Ensure we have a string ID
+  const freelancerId = typeof app.freelancerId === 'object' ? app.freelancerId._id : app.freelancerId;
+
+  useEffect(() => {
+    const fetchFreelancer = async () => {
+      try {
+        if (freelancerId) {
+          const user = await getUserById(freelancerId);
+          setFreelancer(user);
+        }
+      } catch (err) {
+        console.error("Failed to fetch freelancer", err);
+      }
+    };
+    fetchFreelancer();
+  }, [freelancerId, getUserById]);
+
+  if (!freelancer) return <div className="p-4"><Loader2 className="h-6 w-6 animate-spin text-primary" /></div>;
+
+  return (
+    <div className="rounded-lg border border-border p-4">
+      <div className="flex items-start justify-between">
+        <div className="flex items-start gap-4">
+          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10">
+            <span className="text-lg font-bold text-primary">
+              {freelancer.name?.charAt(0) || '?'}
+            </span>
+          </div>
+          <div>
+            <p className="font-semibold text-card-foreground">
+              {freelancer.name}
+            </p>
+            <div className="flex flex-wrap gap-1 mt-1">
+              {freelancer.skills?.slice(0, 4).map((skill) => (
+                <Badge key={skill} variant="outline" className="text-xs">
+                  {skill}
+                </Badge>
+              ))}
+            </div>
+            <div className="mt-2 text-sm text-muted-foreground whitespace-pre-wrap">
+              {app.coverLetter}
+            </div>
+            {app.demoUrl && (
+              <a
+                href={app.demoUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-2 inline-flex items-center gap-1 text-sm text-primary hover:underline"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <ExternalLink className="h-3 w-3" />
+                View Demo Project
+              </a>
+            )}
+          </div>
+        </div>
+        {app.status === "pending" ? (
+          <div className="flex gap-2">
+            <Button
+              size="sm"
+              onClick={() =>
+                reviewApplication(project._id, freelancerId, "approved")
+              }
+            >
+              <CheckCircle className="mr-1 h-4 w-4" />
+              Approve
+            </Button>
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() =>
+                reviewApplication(project._id, freelancerId, "rejected")
+              }
+            >
+              <XCircle className="mr-1 h-4 w-4" />
+              Reject
+            </Button>
+          </div>
+        ) : (
+          <Badge
+            className={
+              app.status === "approved"
+                ? "bg-success text-success-foreground"
+                : "bg-destructive text-destructive-foreground"
+            }
+          >
+            {app.status}
+          </Badge>
+        )}
+      </div>
     </div>
   );
 }

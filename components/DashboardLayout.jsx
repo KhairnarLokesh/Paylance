@@ -90,8 +90,8 @@ export default function DashboardLayout({ children }) {
                   setSidebarOpen(false);
                 }}
                 className={`flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${currentView === item.id
-                    ? "bg-sidebar-primary text-sidebar-primary-foreground"
-                    : "text-sidebar-foreground hover:bg-sidebar-accent"
+                  ? "bg-sidebar-primary text-sidebar-primary-foreground"
+                  : "text-sidebar-foreground hover:bg-sidebar-accent"
                   }`}
               >
                 <item.icon className="h-5 w-5" />
@@ -162,7 +162,7 @@ export default function DashboardLayout({ children }) {
                 ) : (
                   <div className="max-h-64 overflow-y-auto">
                     {notifications.slice(0, 5).map((notif) => (
-                      <DropdownMenuItem key={notif.id} className="flex flex-col items-start p-3">
+                      <DropdownMenuItem key={notif._id || notif.id} className="flex flex-col items-start p-3">
                         <span className="text-sm font-medium text-foreground">{notif.title}</span>
                         <span className="text-xs text-muted-foreground">{notif.message}</span>
                       </DropdownMenuItem>

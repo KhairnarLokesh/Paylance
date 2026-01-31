@@ -208,6 +208,11 @@ export function AppProvider({ children }) {
         body: JSON.stringify({ action: 'approve' })
       });
       const updatedProject = await res.json();
+
+      if (!res.ok) {
+        throw new Error(updatedProject.error || 'Failed to approve milestone');
+      }
+
       setProjects(projects.map(p => p._id === projectId ? updatedProject : p));
       await fetchUserData(user.id); // Refresh wallet and notifications
     } catch (error) {

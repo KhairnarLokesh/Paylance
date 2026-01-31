@@ -7,7 +7,7 @@ import Notification from '@/models/Notification';
 export async function PATCH(req, { params }) {
     try {
         await dbConnect();
-        const { id, milestoneId } = params;
+        const { id, milestoneId } = await params;
         const { action, submission } = await req.json(); // 'submit' or 'approve'
 
         const project = await Project.findById(id);
