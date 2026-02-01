@@ -15,6 +15,12 @@ export function AppProvider({ children }) {
   const [selectedChat, setSelectedChat] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  // Helper to update project in both list and selected view
+  const updateLocalProject = (updatedProject) => {
+    setProjects(prev => prev.map(p => p._id === updatedProject._id ? updatedProject : p));
+    setSelectedProject(prev => (prev && prev._id === updatedProject._id ? updatedProject : prev));
+  };
+
   // Fetch all user data
   const fetchUserData = useCallback(async (userId) => {
     try {
@@ -33,6 +39,14 @@ export function AppProvider({ children }) {
       setProjects(projectsData);
       setNotifications(notificationsData);
       setTransactions(transactionsData);
+
+      // Update selected project if it exists in the new data
+      setSelectedProject(prev => {
+        if (!prev) return prev;
+        const found = projectsData.find(p => p._id === prev._id);
+        return found || prev;
+      });
+
     } catch (error) {
       console.error("Error fetching user data:", error);
     }
@@ -134,7 +148,7 @@ export function AppProvider({ children }) {
         })
       });
       const updatedProject = await res.json();
-      setProjects(projects.map(p => p._id === projectId ? updatedProject : p));
+      updateLocalProject(updatedProject);
     } catch (error) {
       console.error("Error applying to project:", error);
     }
@@ -147,9 +161,18 @@ export function AppProvider({ children }) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ decision })
       });
+
       const updatedProject = await res.json();
-      setProjects(projects.map(p => p._id === projectId ? updatedProject : p));
-      await fetchUserData(user.id); // Refresh notifications
+
+      if (!res.ok) {
+        throw new Error(updatedProject.error || 'Failed to review application');
+      }
+
+      updateLocalProject(updatedProject);
+
+      if (user) {
+        await fetchUserData(user._id || user.id); // Refresh notifications
+      }
     } catch (error) {
       console.error("Error reviewing application:", error);
     }
@@ -178,7 +201,7 @@ export function AppProvider({ children }) {
           body: JSON.stringify({ escrowAmount: amount })
         });
         const updatedProject = await projRes.json();
-        setProjects(projects.map(p => p._id === projectId ? updatedProject : p));
+        updateLocalProject(updatedProject);
         setTransactions([data.transaction, ...transactions]);
       }
     } catch (error) {
@@ -194,7 +217,7 @@ export function AppProvider({ children }) {
         body: JSON.stringify({ action: 'submit', submission })
       });
       const updatedProject = await res.json();
-      setProjects(projects.map(p => p._id === projectId ? updatedProject : p));
+      updateLocalProject(updatedProject);
     } catch (error) {
       console.error("Error submitting milestone:", error);
     }
@@ -213,7 +236,7 @@ export function AppProvider({ children }) {
         throw new Error(updatedProject.error || 'Failed to approve milestone');
       }
 
-      setProjects(projects.map(p => p._id === projectId ? updatedProject : p));
+      updateLocalProject(updatedProject);
       await fetchUserData(user.id); // Refresh wallet and notifications
     } catch (error) {
       console.error("Error approving milestone:", error);
