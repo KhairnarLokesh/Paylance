@@ -127,6 +127,31 @@
   --color-sidebar-ring: var(--sidebar-ring);
 }
 
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  @keyframes ping-slow {
+    0% {
+      transform: translateX(-100%);
+    }
+
+    100% {
+      transform: translateX(300%);
+    }
+  }
+
+  .animate-ping-slow {
+    animation: ping-slow 3s linear infinite;
+  }
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;

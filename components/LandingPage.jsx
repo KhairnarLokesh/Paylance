@@ -1,8 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useApp } from "@/context/AppContext";
 import { Button } from "@/components/ui/button";
+import Footer from "@/components/Footer";
+import ProjectCard from "@/components/ProjectCard";
 import {
   ArrowRight,
   CheckCircle,
@@ -17,6 +19,68 @@ import {
 export default function LandingPage() {
   const { setCurrentView } = useApp();
   const [currentSlide, setCurrentSlide] = useState(0);
+  const scrollRef = useRef(null);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (scrollRef.current) {
+        const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
+        const maxScroll = scrollWidth - clientWidth;
+
+        if (scrollLeft >= maxScroll - 50) {
+          scrollRef.current.scrollTo({ left: 0, behavior: 'smooth' });
+        } else {
+          scrollRef.current.scrollBy({ left: 432, behavior: 'smooth' });
+        }
+      }
+    }, 200);
+    return () => clearInterval(interval);
+  }, []);
+
+  const demoProjects = [
+    {
+      title: "E-commerce Website Development",
+      tags: ["React", "Node.js", "MongoDB"],
+      budget: "₹25,000 – ₹40,000",
+      milestones: 3,
+      image: "https://images.unsplash.com/photo-1557821552-17105176677c?auto=format&fit=crop&q=80&w=800"
+    },
+    {
+      title: "Mobile App for Food Delivery",
+      tags: ["Flutter", "Firebase", "Dart"],
+      budget: "₹35,000 – ₹55,000",
+      milestones: 4,
+      image: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&q=80&w=800"
+    },
+    {
+      title: "AI Chatbot Integration",
+      tags: ["Python", "OpenAI", "Next.js"],
+      budget: "₹15,000 – ₹25,000",
+      milestones: 2,
+      image: "https://images.unsplash.com/photo-1531746790731-6c087fecd65a?auto=format&fit=crop&q=80&w=800"
+    },
+    {
+      title: "Portfolio website for Designer",
+      tags: ["Framer", "React", "Tailwind"],
+      budget: "₹10,000 – ₹18,000",
+      milestones: 2,
+      image: "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&q=80&w=800"
+    },
+    {
+      title: "SaaS Dashboard Redesign",
+      tags: ["UI/UX", "Figma", "Next.js"],
+      budget: "₹45,000 – ₹70,000",
+      milestones: 5,
+      image: "https://images.unsplash.com/photo-1551288049-bbbda536339a?auto=format&fit=crop&q=80&w=800"
+    },
+    {
+      title: "Automated Testing Suite",
+      tags: ["Jest", "Cypress", "Node.js"],
+      budget: "₹20,000 – ₹30,000",
+      milestones: 3,
+      image: "https://images.unsplash.com/photo-1516116216624-53e697fedbea?auto=format&fit=crop&q=80&w=800"
+    }
+  ];
 
   const slides = [
     {
@@ -180,23 +244,43 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="border-t border-slate-200 bg-white py-12">
-        <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-6">
-          <div className="flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-700">
-              <Briefcase className="h-4 w-4 text-white" />
+      {/* Featured Projects Section */}
+      <section className="py-24 bg-white overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col mb-12">
+            <h2 className="text-4xl font-extrabold text-slate-900 tracking-tight mb-4">
+              Explore Our <span className="text-blue-700">Demo Projects</span>
+            </h2>
+            <p className="text-lg text-slate-500 max-w-2xl">
+              Get inspired by these sample project structures. Swipe or scroll to explore our diverse range of demo projects.
+            </p>
+          </div>
+
+          <div className="relative group/slider">
+            <div ref={scrollRef} className="flex gap-8 overflow-x-auto pb-12 cursor-grab active:cursor-grabbing snap-x snap-mandatory no-scrollbar scroll-smooth">
+              {demoProjects.map((project, idx) => (
+                <div key={idx} className="min-w-[320px] md:min-w-[400px] snap-center">
+                  <ProjectCard project={project} />
+                </div>
+              ))}
             </div>
-            <span className="font-bold text-slate-900">Paylance</span>
+
+            {/* Gradient Mask for focus */}
+            <div className="absolute right-0 top-0 bottom-12 w-32 bg-gradient-to-l from-white to-transparent pointer-events-none z-10 hidden md:block" />
+
+            {/* Scroll Indicator helper */}
+            <div className="flex justify-center gap-1.5 mt-4">
+              <div className="h-1.5 w-12 rounded-full bg-blue-100 relative overflow-hidden">
+                <div className="absolute inset-0 bg-blue-600 w-1/3 animate-ping-slow" />
+              </div>
+              <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Scroll to explore</p>
+            </div>
           </div>
-          <div className="flex gap-6 text-sm text-slate-500">
-            <a href="#" className="hover:text-blue-700">Privacy Policy</a>
-            <a href="#" className="hover:text-blue-700">Terms of Service</a>
-            <a href="#" className="hover:text-blue-700">Contact</a>
-          </div>
-          <p className="text-slate-500 text-sm">© 2025 Paylance. All rights reserved.</p>
         </div>
-      </footer>
+      </section>
+
+      {/* Footer */}
+      <Footer />
     </div>
   );
 }
