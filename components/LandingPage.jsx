@@ -21,21 +21,7 @@ export default function LandingPage() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const scrollRef = useRef(null);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (scrollRef.current) {
-        const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
-        const maxScroll = scrollWidth - clientWidth;
 
-        if (scrollLeft >= maxScroll - 50) {
-          scrollRef.current.scrollTo({ left: 0, behavior: 'smooth' });
-        } else {
-          scrollRef.current.scrollBy({ left: 432, behavior: 'smooth' });
-        }
-      }
-    }, 200);
-    return () => clearInterval(interval);
-  }, []);
 
   const demoProjects = [
     {
