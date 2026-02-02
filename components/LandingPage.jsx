@@ -128,28 +128,26 @@ export default function LandingPage() {
               </span>
             </div>
 
-            {/* Navigation Links */}
-            <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-600">
-              <button
-                onClick={() => document.getElementById('demo-projects')?.scrollIntoView({ behavior: 'smooth' })}
-                className="hover:text-blue-700 transition-colors"
-              >
-                Explore
-              </button>
-              <button
-                onClick={() => document.getElementById('why-paylance')?.scrollIntoView({ behavior: 'smooth' })}
-                className="hover:text-blue-700 transition-colors"
-              >
-                Why Paylance
-              </button>
-              <button className="hover:text-blue-700 transition-colors">Blogs</button>
-              <button className="hover:text-blue-700 transition-colors">Sales Query</button>
-              <button className="hover:text-blue-700 transition-colors">Our Initiatives</button>
+            <div className="hidden md:flex items-center gap-6">
+              <div className="flex items-center gap-6 text-sm font-medium text-slate-600 mr-2">
+                <button
+                  onClick={() => document.getElementById('demo-projects')?.scrollIntoView({ behavior: 'smooth' })}
+                  className="hover:text-blue-700 transition-colors"
+                >
+                  Explore
+                </button>
+                <button
+                  onClick={() => document.getElementById('why-paylance')?.scrollIntoView({ behavior: 'smooth' })}
+                  className="hover:text-blue-700 transition-colors"
+                >
+                  Why Paylance
+                </button>
+              </div>
 
               {user && (
                 <button
                   onClick={() => setCurrentView(user.role === 'client' ? 'client-dashboard' : 'freelancer-dashboard')}
-                  className="flex items-center gap-1.5 px-4 py-2 bg-blue-600 text-white rounded-full font-bold hover:bg-blue-700 shadow-md shadow-blue-100 transition-all active:scale-95 ml-4"
+                  className="flex items-center gap-1.5 px-4 py-2 bg-blue-600 text-white rounded-full font-bold hover:bg-blue-700 shadow-md shadow-blue-100 transition-all active:scale-95"
                 >
                   <LayoutDashboard className="h-4 w-4" />
                   Dashboard
@@ -159,15 +157,13 @@ export default function LandingPage() {
               {user?.role === 'client' && (
                 <button
                   onClick={() => setCurrentView('create-project')}
-                  className="flex items-center gap-1.5 px-4 py-2 bg-blue-50 text-blue-700 rounded-full font-bold hover:bg-blue-100 transition-all border border-blue-200 ml-2"
+                  className="flex items-center gap-1.5 px-4 py-2 bg-blue-50 text-blue-700 rounded-full font-bold hover:bg-blue-100 transition-all border border-blue-200"
                 >
                   <Plus className="h-4 w-4" />
                   Post Project
                 </button>
               )}
-            </nav>
 
-            <div className="hidden md:flex items-center gap-4">
               {user ? (
                 <div className="flex items-center gap-4">
                   {/* Notifications */}
@@ -296,9 +292,7 @@ export default function LandingPage() {
             >
               Why Paylance
             </button>
-            <button className="block w-full text-left text-base font-semibold text-slate-600 hover:text-blue-700 py-2">Blogs</button>
-            <button className="block w-full text-left text-base font-semibold text-slate-600 hover:text-blue-700 py-2">Sales Query</button>
-            <button className="block w-full text-left text-base font-semibold text-slate-600 hover:text-blue-700 py-2 border-b border-slate-50 pb-4">Our Initiatives</button>
+
 
             {user ? (
               <div className="space-y-4 pt-2">
