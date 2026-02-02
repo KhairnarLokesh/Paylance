@@ -23,13 +23,16 @@ import {
   LogOut,
   LayoutDashboard,
   UserCircle,
-  Plus
+  Plus,
+  Menu,
+  X
 } from "lucide-react";
 
 export default function LandingPage() {
   const { setCurrentView, user, logout, notifications } = useApp();
   const unreadCount = notifications?.filter(n => !n.read).length || 0;
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const scrollRef = useRef(null);
 
 
@@ -259,8 +262,101 @@ export default function LandingPage() {
                 Login/Sign Up
               </Button>
             )}
+
+            {/* Mobile Menu Button */}
+            <button
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="flex md:hidden p-2 text-slate-600 hover:bg-slate-100 rounded-lg transition-colors ml-2"
+            >
+              {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            </button>
           </div>
         </div>
+
+        {/* Mobile menu content */}
+        {isMenuOpen && (
+          <div className="md:hidden border-t border-slate-100 bg-white absolute top-20 left-0 w-full shadow-xl z-[60] py-6 px-6 space-y-4 animate-in slide-in-from-top-2 duration-200">
+            <button
+              onClick={() => {
+                document.getElementById('demo-projects')?.scrollIntoView({ behavior: 'smooth' });
+                setIsMenuOpen(false);
+              }}
+              className="block w-full text-left text-base font-semibold text-slate-600 hover:text-blue-700 py-2"
+            >
+              Explore
+            </button>
+            <button
+              onClick={() => {
+                document.getElementById('why-paylance')?.scrollIntoView({ behavior: 'smooth' });
+                setIsMenuOpen(false);
+              }}
+              className="block w-full text-left text-base font-semibold text-slate-600 hover:text-blue-700 py-2"
+            >
+              Why Paylance
+            </button>
+            <button className="block w-full text-left text-base font-semibold text-slate-600 hover:text-blue-700 py-2">Blogs</button>
+            <button className="block w-full text-left text-base font-semibold text-slate-600 hover:text-blue-700 py-2">Sales Query</button>
+            <button className="block w-full text-left text-base font-semibold text-slate-600 hover:text-blue-700 py-2 border-b border-slate-50 pb-4">Our Initiatives</button>
+
+            {user ? (
+              <div className="space-y-4 pt-2">
+                <button
+                  onClick={() => {
+                    setCurrentView(user.role === 'client' ? 'client-dashboard' : 'freelancer-dashboard');
+                    setIsMenuOpen(false);
+                  }}
+                  className="flex items-center gap-3 w-full text-left text-base font-bold text-blue-600 py-2"
+                >
+                  <LayoutDashboard className="h-5 w-5" />
+                  Dashboard
+                </button>
+                {user.role === 'client' && (
+                  <button
+                    onClick={() => {
+                      setCurrentView('create-project');
+                      setIsMenuOpen(false);
+                    }}
+                    className="flex items-center gap-3 w-full text-left text-base font-bold text-blue-700 py-2"
+                  >
+                    <Plus className="h-5 w-5" />
+                    Post Project
+                  </button>
+                )}
+                <button
+                  onClick={() => {
+                    setCurrentView('profile');
+                    setIsMenuOpen(false);
+                  }}
+                  className="flex items-center gap-3 w-full text-left text-base font-bold text-slate-700 py-2"
+                >
+                  <UserCircle className="h-5 w-5" />
+                  My Profile
+                </button>
+                <div className="h-px bg-slate-100 my-2" />
+                <button
+                  onClick={() => {
+                    logout();
+                    setIsMenuOpen(false);
+                  }}
+                  className="flex items-center gap-3 w-full text-left text-base font-bold text-red-500 py-2"
+                >
+                  <LogOut className="h-5 w-5" />
+                  Logout
+                </button>
+              </div>
+            ) : (
+              <Button
+                className="w-full h-12 bg-blue-700 hover:bg-blue-800 text-white rounded-xl font-bold shadow-lg shadow-blue-100 transition-all active:scale-95"
+                onClick={() => {
+                  setCurrentView('login');
+                  setIsMenuOpen(false);
+                }}
+              >
+                Login/Sign Up
+              </Button>
+            )}
+          </div>
+        )}
       </header>
 
       {/* Hero Section matching the image */}
