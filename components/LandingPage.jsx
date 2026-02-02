@@ -167,101 +167,103 @@ export default function LandingPage() {
               )}
             </nav>
 
-            {user ? (
-              <div className="flex items-center gap-4">
-                {/* Notifications */}
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="icon" className="relative h-10 w-10 rounded-full hover:bg-slate-100 transition-colors">
-                      <Bell className="h-5 w-5 text-slate-600" />
-                      {unreadCount > 0 && (
-                        <span className="absolute top-1 right-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-600 text-[10px] font-bold text-white border-2 border-white">
-                          {unreadCount}
-                        </span>
-                      )}
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end" className="w-80 p-2 rounded-2xl shadow-xl border-slate-100">
-                    <div className="p-3">
-                      <p className="text-sm font-semibold text-slate-900 px-2 mb-2">Notifications</p>
-                      <div className="h-px bg-slate-100 mb-2" />
-                      {notifications?.length === 0 ? (
-                        <p className="text-center text-xs text-slate-500 py-4">No new notifications</p>
-                      ) : (
-                        notifications?.slice(0, 5).map((notif) => (
-                          <div key={notif._id || notif.id} className="p-3 hover:bg-slate-50 rounded-xl cursor-pointer transition-colors">
-                            <p className="text-xs font-bold text-slate-800">{notif.title}</p>
-                            <p className="text-[11px] text-slate-500 line-clamp-2">{notif.message}</p>
-                          </div>
-                        ))
-                      )}
-                    </div>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-
-                {/* User Menu */}
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="icon" className="h-10 w-10 rounded-full hover:bg-slate-100 transition-colors border border-slate-100 overflow-hidden">
-                      {user.profile_image ? (
-                        <img src={user.profile_image} alt={user.name} className="h-full w-full object-cover" />
-                      ) : (
-                        <User className="h-5 w-5 text-slate-600" />
-                      )}
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end" className="w-72 p-2 rounded-2xl shadow-2xl border-slate-100">
-                    <div className="px-4 py-4 flex items-center gap-3">
-                      {user.profile_image ? (
-                        <img src={user.profile_image} alt={user.name} className="h-12 w-12 rounded-full object-cover border-2 border-slate-50 shadow-sm" />
-                      ) : (
-                        <div className="h-12 w-12 rounded-full bg-slate-100 flex items-center justify-center">
-                          <User className="h-6 w-6 text-slate-400" />
-                        </div>
-                      )}
-                      <div className="flex flex-col min-w-0">
-                        <p className="text-lg font-bold text-slate-900 leading-tight truncate">{user.name}</p>
-                        <p className="text-sm text-slate-500 truncate">{user.email}</p>
+            <div className="hidden md:flex items-center gap-4">
+              {user ? (
+                <div className="flex items-center gap-4">
+                  {/* Notifications */}
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="ghost" size="icon" className="relative h-10 w-10 rounded-full hover:bg-slate-100 transition-colors">
+                        <Bell className="h-5 w-5 text-slate-600" />
+                        {unreadCount > 0 && (
+                          <span className="absolute top-1 right-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-600 text-[10px] font-bold text-white border-2 border-white">
+                            {unreadCount}
+                          </span>
+                        )}
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" className="w-80 p-2 rounded-2xl shadow-xl border-slate-100">
+                      <div className="p-3">
+                        <p className="text-sm font-semibold text-slate-900 px-2 mb-2">Notifications</p>
+                        <div className="h-px bg-slate-100 mb-2" />
+                        {notifications?.length === 0 ? (
+                          <p className="text-center text-xs text-slate-500 py-4">No new notifications</p>
+                        ) : (
+                          notifications?.slice(0, 5).map((notif) => (
+                            <div key={notif._id || notif.id} className="p-3 hover:bg-slate-50 rounded-xl cursor-pointer transition-colors">
+                              <p className="text-xs font-bold text-slate-800">{notif.title}</p>
+                              <p className="text-[11px] text-slate-500 line-clamp-2">{notif.message}</p>
+                            </div>
+                          ))
+                        )}
                       </div>
-                    </div>
-                    <div className="h-px bg-slate-100 my-2 mx-2" />
+                    </DropdownMenuContent>
+                  </DropdownMenu>
 
-                    <DropdownMenuItem
-                      onClick={() => setCurrentView('profile')}
-                      className="flex items-center gap-3 p-3 rounded-xl cursor-pointer hover:bg-slate-50 focus:bg-slate-50 text-slate-600 focus:text-slate-900 transition-colors outline-none"
-                    >
-                      <UserCircle className="h-5 w-5 text-slate-400" />
-                      <span className="font-medium">My Profile</span>
-                    </DropdownMenuItem>
+                  {/* User Menu */}
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="ghost" size="icon" className="h-10 w-10 rounded-full hover:bg-slate-100 transition-colors border border-slate-100 overflow-hidden">
+                        {user.profile_image ? (
+                          <img src={user.profile_image} alt={user.name} className="h-full w-full object-cover" />
+                        ) : (
+                          <User className="h-5 w-5 text-slate-600" />
+                        )}
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" className="w-72 p-2 rounded-2xl shadow-2xl border-slate-100">
+                      <div className="px-4 py-4 flex items-center gap-3">
+                        {user.profile_image ? (
+                          <img src={user.profile_image} alt={user.name} className="h-12 w-12 rounded-full object-cover border-2 border-slate-50 shadow-sm" />
+                        ) : (
+                          <div className="h-12 w-12 rounded-full bg-slate-100 flex items-center justify-center">
+                            <User className="h-6 w-6 text-slate-400" />
+                          </div>
+                        )}
+                        <div className="flex flex-col min-w-0">
+                          <p className="text-lg font-bold text-slate-900 leading-tight truncate">{user.name}</p>
+                          <p className="text-sm text-slate-500 truncate">{user.email}</p>
+                        </div>
+                      </div>
+                      <div className="h-px bg-slate-100 my-2 mx-2" />
 
-                    <DropdownMenuItem
-                      onClick={() => setCurrentView(user.role === 'client' ? 'client-dashboard' : 'freelancer-dashboard')}
-                      className="flex items-center gap-3 p-3 rounded-xl cursor-pointer hover:bg-slate-50 focus:bg-slate-50 text-slate-600 focus:text-slate-900 transition-colors outline-none"
-                    >
-                      <LayoutDashboard className="h-5 w-5 text-slate-400" />
-                      <span className="font-medium">
-                        {user.role === 'freelancer' ? 'Innovator Dashboard' : 'Client Dashboard'}
-                      </span>
-                    </DropdownMenuItem>
+                      <DropdownMenuItem
+                        onClick={() => setCurrentView('profile')}
+                        className="flex items-center gap-3 p-3 rounded-xl cursor-pointer hover:bg-slate-50 focus:bg-slate-50 text-slate-600 focus:text-slate-900 transition-colors outline-none"
+                      >
+                        <UserCircle className="h-5 w-5 text-slate-400" />
+                        <span className="font-medium">My Profile</span>
+                      </DropdownMenuItem>
 
-                    <DropdownMenuItem
-                      onClick={logout}
-                      className="flex items-center gap-3 p-3 rounded-xl cursor-pointer hover:bg-slate-50 focus:bg-slate-50 text-slate-600 focus:text-slate-900 transition-colors outline-none group"
-                    >
-                      <LogOut className="h-5 w-5 text-slate-400 group-hover:text-red-500 transition-colors" />
-                      <span className="font-medium group-hover:text-red-500 transition-colors">Logout</span>
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </div>
-            ) : (
-              <Button
-                className="bg-blue-700 hover:bg-blue-800 text-white rounded-md px-6 font-medium shadow-sm transition-all hover:shadow-md"
-                onClick={() => setCurrentView('login')}
-              >
-                Login/Sign Up
-              </Button>
-            )}
+                      <DropdownMenuItem
+                        onClick={() => setCurrentView(user.role === 'client' ? 'client-dashboard' : 'freelancer-dashboard')}
+                        className="flex items-center gap-3 p-3 rounded-xl cursor-pointer hover:bg-slate-50 focus:bg-slate-50 text-slate-600 focus:text-slate-900 transition-colors outline-none"
+                      >
+                        <LayoutDashboard className="h-5 w-5 text-slate-400" />
+                        <span className="font-medium">
+                          {user.role === 'freelancer' ? 'Innovator Dashboard' : 'Client Dashboard'}
+                        </span>
+                      </DropdownMenuItem>
+
+                      <DropdownMenuItem
+                        onClick={logout}
+                        className="flex items-center gap-3 p-3 rounded-xl cursor-pointer hover:bg-slate-50 focus:bg-slate-50 text-slate-600 focus:text-slate-900 transition-colors outline-none group"
+                      >
+                        <LogOut className="h-5 w-5 text-slate-400 group-hover:text-red-500 transition-colors" />
+                        <span className="font-medium group-hover:text-red-500 transition-colors">Logout</span>
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
+              ) : (
+                <Button
+                  className="bg-blue-700 hover:bg-blue-800 text-white rounded-md px-6 font-medium shadow-sm transition-all hover:shadow-md"
+                  onClick={() => setCurrentView('login')}
+                >
+                  Login/Sign Up
+                </Button>
+              )}
+            </div>
 
             {/* Mobile Menu Button */}
             <button
