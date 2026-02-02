@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useApp } from "@/context/AppContext";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import ProjectCard from "@/components/ProjectCard";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -75,6 +76,7 @@ export function CreateProjectPage() {
     category: "",
     skills: [],
     budget: "",
+    image: "",
     milestones: [{ title: "", amount: "", deadline: "" }],
   });
   const [loading, setLoading] = useState(false);
@@ -132,7 +134,7 @@ export function CreateProjectPage() {
       description: formData.description,
       category: formData.category,
       skills: formData.skills,
-      budget: totalBudget,
+      image: formData.image || "https://images.unsplash.com/photo-1516116216624-53e697fedbea?auto=format&fit=crop&q=80&w=800",
       milestones: formData.milestones.map((m) => ({
         title: m.title,
         amount: Number.parseFloat(m.amount),
@@ -203,6 +205,17 @@ export function CreateProjectPage() {
                   ))}
                 </SelectContent>
               </Select>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="image">Project Image URL (Optional)</Label>
+              <Input
+                id="image"
+                placeholder="https://images.unsplash.com/photo-..."
+                value={formData.image}
+                onChange={(e) => updateField("image", e.target.value)}
+              />
+              <p className="text-[10px] text-muted-foreground">Add a high-quality image link to make your project stand out.</p>
             </div>
 
             <div className="space-y-2">
@@ -380,61 +393,24 @@ export function BrowseProjectsPage() {
             </CardContent>
           </Card>
         ) : (
-          filteredProjects.map((project) => (
-            <Card
-              key={project._id}
-              className="group cursor-pointer border-border transition-all hover:border-primary/50 hover:shadow-md"
-              onClick={() => {
-                setSelectedProject(project);
-                setCurrentView("project-detail");
-              }}
-            >
-              <CardContent className="p-6">
-                <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-                  <div className="flex-1 space-y-2">
-                    <div className="flex items-center gap-2">
-                      <h3 className="text-lg font-semibold text-card-foreground group-hover:text-primary">
-                        {project.title}
-                      </h3>
-                      {hasApplied(project) && (
-                        <Badge variant="secondary">Applied</Badge>
-                      )}
-                    </div>
-                    <p className="line-clamp-2 text-sm text-muted-foreground">
-                      {project.description}
-                    </p>
-                    <div className="flex flex-wrap gap-2">
-                      {project.skills.map((skill) => (
-                        <Badge
-                          key={skill}
-                          variant="outline"
-                          className={
-                            user.skills?.includes(skill)
-                              ? "border-primary/50 bg-primary/5 text-primary"
-                              : ""
-                          }
-                        >
-                          {skill}
-                        </Badge>
-                      ))}
-                    </div>
-                  </div>
-                  <div className="shrink-0 text-right">
-                    <p className="text-2xl font-bold text-primary">
-                      ${project.budget.toLocaleString()}
-                    </p>
-                    <p className="text-sm text-muted-foreground">
-                      {project.milestones.length} milestones
-                    </p>
-                    <div className="mt-2 flex items-center gap-1 text-xs text-muted-foreground">
-                      <Clock className="h-3 w-3" />
-                      Posted {project.createdAt}
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          ))
+          <div className="grid gap-6 md:grid-cols-2">
+            {filteredProjects.map((project) => (
+              <ProjectCard
+                key={project._id}
+                project={{
+                  ...project,
+                  tags: project.skills,
+                  budget: `₹${project.budget.toLocaleString()}`,
+                  milestones: project.milestones.length,
+                  image: project.image
+                }}
+                onClick={() => {
+                  setSelectedProject(project);
+                  setCurrentView("project-detail");
+                }}
+              />
+            ))}
+          </div>
         )}
       </div>
     </div>
@@ -512,56 +488,25 @@ export function MyProjectsPage() {
             </CardContent>
           </Card>
         ) : (
-          filteredProjects.map((project) => {
-            const pendingApps = project.applications.filter(
-              (a) => a.status === "pending"
-            ).length;
-
-            return (
-              <Card
+          <div className="grid gap-6 md:grid-cols-2">
+            {filteredProjects.map((project) => (
+              <ProjectCard
                 key={project._id}
-                className="cursor-pointer border-border transition-all hover:border-primary/50 hover:shadow-md"
+                project={{
+                  ...project,
+                  tags: project.skills,
+                  budget: `₹${project.budget.toLocaleString()}`,
+                  milestones: project.milestones.length,
+                  image: project.image,
+                  status: project.status === "in_progress" ? "In Progress" : project.status.charAt(0)?.toUpperCase() + project.status?.slice(1)
+                }}
                 onClick={() => {
                   setSelectedProject(project);
                   setCurrentView("project-detail");
                 }}
-              >
-                <CardContent className="p-6">
-                  <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-                    <div className="flex-1 space-y-2">
-                      <div className="flex items-center gap-2">
-                        <h3 className="text-lg font-semibold text-card-foreground">
-                          {project.title}
-                        </h3>
-                        {getStatusBadge(project.status)}
-                      </div>
-                      <p className="line-clamp-2 text-sm text-muted-foreground">
-                        {project.description}
-                      </p>
-                      {pendingApps > 0 && (
-                        <div className="flex items-center gap-2 text-warning">
-                          <Users className="h-4 w-4" />
-                          <span className="text-sm font-medium">
-                            {pendingApps} pending application{pendingApps > 1 ? "s" : ""}
-                          </span>
-                        </div>
-                      )}
-                    </div>
-                    <div className="shrink-0 text-right">
-                      <p className="text-xl font-bold text-primary">
-                        ${project.budget.toLocaleString()}
-                      </p>
-                      {project.escrowAmount > 0 && (
-                        <p className="text-sm text-muted-foreground">
-                          ${project.escrowAmount} in escrow
-                        </p>
-                      )}
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            );
-          })
+              />
+            ))}
+          </div>
         )}
       </div>
     </div>
@@ -642,62 +587,29 @@ export function MyWorkPage() {
             </CardContent>
           </Card>
         ) : (
-          filteredWork.map((project) => {
-            const status = getStatusForFreelancer(project);
-            const completedMilestones = project.milestones.filter(
-              (m) => m.status === "approved"
-            ).length;
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {filteredWork.map((project) => {
+              const status = getStatusForFreelancer(project);
 
-            return (
-              <Card
-                key={project._id}
-                className="cursor-pointer border-border transition-all hover:border-primary/50 hover:shadow-md"
-                onClick={() => {
-                  setSelectedProject(project);
-                  setCurrentView("project-detail");
-                }}
-              >
-                <CardContent className="p-6">
-                  <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-                    <div className="flex-1 space-y-2">
-                      <div className="flex items-center gap-2">
-                        <h3 className="text-lg font-semibold text-card-foreground">
-                          {project.title}
-                        </h3>
-                        <Badge className={status.style}>{status.label}</Badge>
-                      </div>
-                      <p className="line-clamp-2 text-sm text-muted-foreground">
-                        {project.description}
-                      </p>
-                      {project.assignedTo === user._id && (
-                        <div className="mt-2">
-                          <div className="flex items-center justify-between text-sm">
-                            <span className="text-muted-foreground">Progress</span>
-                            <span className="font-medium text-foreground">
-                              {completedMilestones}/{project.milestones.length}
-                            </span>
-                          </div>
-                          <div className="mt-1 h-2 overflow-hidden rounded-full bg-muted">
-                            <div
-                              className="h-full rounded-full bg-primary"
-                              style={{
-                                width: `${(completedMilestones / project.milestones.length) * 100}%`,
-                              }}
-                            />
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                    <div className="shrink-0 text-right">
-                      <p className="text-xl font-bold text-primary">
-                        ${project.budget.toLocaleString()}
-                      </p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            );
-          })
+              return (
+                <ProjectCard
+                  key={project._id}
+                  project={{
+                    ...project,
+                    tags: project.skills,
+                    budget: `₹${project.budget.toLocaleString()}`,
+                    milestones: project.milestones.length,
+                    image: project.image,
+                    status: status.label
+                  }}
+                  onClick={() => {
+                    setSelectedProject(project);
+                    setCurrentView("project-detail");
+                  }}
+                />
+              );
+            })}
+          </div>
         )}
       </div>
     </div>

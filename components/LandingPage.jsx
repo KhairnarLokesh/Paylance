@@ -40,45 +40,57 @@ export default function LandingPage() {
   const demoProjects = [
     {
       title: "E-commerce Website Development",
+      description: "Build a full-featured online store with product management, secure checkout, and user accounts.",
       tags: ["React", "Node.js", "MongoDB"],
       budget: "₹25,000 – ₹40,000",
       milestones: 3,
-      image: "https://images.unsplash.com/photo-1557821552-17105176677c?auto=format&fit=crop&q=80&w=800"
+      image: "https://images.unsplash.com/photo-1557821552-17105176677c?auto=format&fit=crop&q=80&w=800",
+      status: "Demo"
     },
     {
       title: "Mobile App for Food Delivery",
+      description: "Develop a cross-platform mobile application for real-time food ordering and delivery tracking.",
       tags: ["Flutter", "Firebase", "Dart"],
       budget: "₹35,000 – ₹55,000",
       milestones: 4,
-      image: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&q=80&w=800"
+      image: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&q=80&w=800",
+      status: "Demo"
     },
     {
       title: "AI Chatbot Integration",
+      description: "Implement an intelligent customer support chatbot using OpenAI's GPT models for automated replies.",
       tags: ["Python", "OpenAI", "Next.js"],
       budget: "₹15,000 – ₹25,000",
       milestones: 2,
-      image: "https://images.unsplash.com/photo-1531746790731-6c087fecd65a?auto=format&fit=crop&q=80&w=800"
+      image: "https://images.unsplash.com/photo-1531746790731-6c087fecd65a?auto=format&fit=crop&q=80&w=800",
+      status: "Demo"
     },
     {
       title: "Portfolio website for Designer",
+      description: "Create a stunning, high-performance portfolio website with smooth animations and case study layouts.",
       tags: ["Framer", "React", "Tailwind"],
       budget: "₹10,000 – ₹18,000",
       milestones: 2,
-      image: "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&q=80&w=800"
+      image: "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&q=80&w=800",
+      status: "Demo"
     },
     {
       title: "SaaS Dashboard Redesign",
+      description: "Modernize a complex B2B SaaS dashboard with improved data visualization and user experience.",
       tags: ["UI/UX", "Figma", "Next.js"],
       budget: "₹45,000 – ₹70,000",
       milestones: 5,
-      image: "https://images.unsplash.com/photo-1551288049-bbbda536339a?auto=format&fit=crop&q=80&w=800"
+      image: "https://images.unsplash.com/photo-1551288049-bbbda536339a?auto=format&fit=crop&q=80&w=800",
+      status: "Demo"
     },
     {
       title: "Automated Testing Suite",
+      description: "Design and implement a comprehensive end-to-end testing suite for a large-scale web application.",
       tags: ["Jest", "Cypress", "Node.js"],
       budget: "₹20,000 – ₹30,000",
       milestones: 3,
-      image: "https://images.unsplash.com/photo-1516116216624-53e697fedbea?auto=format&fit=crop&q=80&w=800"
+      image: "https://images.unsplash.com/photo-1516116216624-53e697fedbea?auto=format&fit=crop&q=80&w=800",
+      status: "Demo"
     }
   ];
 
@@ -464,9 +476,9 @@ export default function LandingPage() {
           </div>
 
           <div className="relative group/slider">
-            <div ref={scrollRef} className="flex gap-8 overflow-x-auto pb-12 cursor-grab active:cursor-grabbing snap-x snap-mandatory no-scrollbar scroll-smooth">
+            <div ref={scrollRef} className="flex gap-6 overflow-x-auto pb-8 cursor-grab active:cursor-grabbing snap-x snap-mandatory no-scrollbar scroll-smooth">
               {demoProjects.map((project, idx) => (
-                <div key={idx} className="min-w-[320px] md:min-w-[400px] snap-center">
+                <div key={idx} className="min-w-[280px] md:min-w-[350px] snap-center">
                   <ProjectCard project={project} />
                 </div>
               ))}

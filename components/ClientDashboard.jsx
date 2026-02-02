@@ -12,6 +12,7 @@ import {
   Plus,
   TrendingUp,
 } from "lucide-react";
+import ProjectCard from "@/components/ProjectCard";
 
 export default function ClientDashboard() {
   const { user, projects, setCurrentView, setSelectedProject } = useApp();
@@ -125,52 +126,24 @@ export default function ClientDashboard() {
               </Button>
             </div>
           ) : (
-            <div className="space-y-4">
-                {activeProjects.slice(0, 3).map((project) => {
-                  const completedMilestones = project.milestones.filter(
-                    (m) => m.status === "approved"
-                  ).length;
-                  const progress = (completedMilestones / project.milestones.length) * 100;
-
-                  return (
-                    <div
-                      key={project._id}
-                      className="group cursor-pointer rounded-lg border border-border p-4 transition-all hover:border-primary/50 hover:shadow-sm"
-                      onClick={() => {
-                        setSelectedProject(project);
-                        setCurrentView("project-detail");
-                      }}
-                    >
-                      <div className="flex items-start justify-between">
-                      <div className="flex-1">
-                        <h3 className="font-semibold text-card-foreground group-hover:text-primary">
-                          {project.title}
-                        </h3>
-                        <p className="mt-1 line-clamp-1 text-sm text-muted-foreground">
-                          {project.description}
-                        </p>
-                      </div>
-                      <span className="ml-4 shrink-0 rounded-full bg-primary/10 px-2.5 py-1 text-xs font-medium text-primary">
-                        ${project.budget.toLocaleString()}
-                      </span>
-                    </div>
-                    <div className="mt-4">
-                      <div className="flex items-center justify-between text-sm">
-                        <span className="text-muted-foreground">Progress</span>
-                        <span className="font-medium text-card-foreground">
-                          {completedMilestones}/{project.milestones.length} milestones
-                        </span>
-                      </div>
-                      <div className="mt-2 h-2 overflow-hidden rounded-full bg-muted">
-                        <div
-                          className="h-full rounded-full bg-primary transition-all"
-                          style={{ width: `${progress}%` }}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {activeProjects.slice(0, 3).map((project) => (
+                <ProjectCard
+                  key={project._id}
+                  project={{
+                    ...project,
+                    tags: project.skills,
+                    budget: `₹${project.budget.toLocaleString()}`,
+                    milestones: project.milestones.length,
+                    image: project.image,
+                    status: project.status === "in_progress" ? "In Progress" : project.status.charAt(0)?.toUpperCase() + project.status?.slice(1)
+                  }}
+                  onClick={() => {
+                    setSelectedProject(project);
+                    setCurrentView("project-detail");
+                  }}
+                />
+              ))}
             </div>
           )}
         </CardContent>

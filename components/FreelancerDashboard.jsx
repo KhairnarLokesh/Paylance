@@ -14,6 +14,7 @@ import {
   CheckCircle,
   AlertCircle,
 } from "lucide-react";
+import ProjectCard from "@/components/ProjectCard";
 
 export default function FreelancerDashboard() {
   const { user, projects, setCurrentView, setSelectedProject } = useApp();
@@ -170,65 +171,24 @@ export default function FreelancerDashboard() {
               </Button>
             </div>
           ) : (
-            <div className="space-y-4">
-              {activeProjects.slice(0, 3).map((project) => {
-                const currentMilestone = project.milestones.find(
-                  (m) => m.status === "pending" || m.status === "submitted"
-                );
-                const completedCount = project.milestones.filter(
-                  (m) => m.status === "approved"
-                ).length;
-
-                return (
-                  <div
-                    key={project._id}
-                    className="group cursor-pointer rounded-lg border border-border p-4 transition-all hover:border-primary/50 hover:shadow-sm"
-                    onClick={() => {
-                      setSelectedProject(project);
-                      setCurrentView("project-detail");
-                    }}
-                  >
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1">
-                        <h3 className="font-semibold text-card-foreground group-hover:text-primary">
-                          {project.title}
-                        </h3>
-                        {currentMilestone && (
-                          <p className="mt-1 text-sm text-muted-foreground">
-                            Current: {currentMilestone.title}
-                          </p>
-                        )}
-                      </div>
-                      <Badge
-                        variant={currentMilestone?.status === "submitted" ? "default" : "secondary"}
-                        className={
-                          currentMilestone?.status === "submitted"
-                            ? "bg-warning text-warning-foreground"
-                            : ""
-                        }
-                      >
-                        {currentMilestone?.status === "submitted" ? "Awaiting Review" : "In Progress"}
-                      </Badge>
-                    </div>
-                    <div className="mt-4">
-                      <div className="flex items-center justify-between text-sm">
-                        <span className="text-muted-foreground">Progress</span>
-                        <span className="font-medium text-card-foreground">
-                          {completedCount}/{project.milestones.length} milestones
-                        </span>
-                      </div>
-                      <div className="mt-2 h-2 overflow-hidden rounded-full bg-muted">
-                        <div
-                          className="h-full rounded-full bg-primary transition-all"
-                          style={{
-                            width: `${(completedCount / project.milestones.length) * 100}%`,
-                          }}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {activeProjects.slice(0, 3).map((project) => (
+                <ProjectCard
+                  key={project._id}
+                  project={{
+                    ...project,
+                    tags: project.skills,
+                    budget: `₹${project.budget.toLocaleString()}`,
+                    milestones: project.milestones.length,
+                    image: project.image,
+                    status: "Active"
+                  }}
+                  onClick={() => {
+                    setSelectedProject(project);
+                    setCurrentView("project-detail");
+                  }}
+                />
+              ))}
             </div>
           )}
         </CardContent>
@@ -250,37 +210,23 @@ export default function FreelancerDashboard() {
             </Button>
           </CardHeader>
           <CardContent>
-            <div className="space-y-3">
-              {availableProjects.slice(0, 2).map((project) => (
-                <div
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {availableProjects.slice(0, 3).map((project) => (
+                <ProjectCard
                   key={project._id}
-                  className="group flex cursor-pointer items-center justify-between rounded-lg border border-border p-4 transition-all hover:border-primary/50"
+                  project={{
+                    ...project,
+                    tags: project.skills,
+                    budget: `₹${project.budget.toLocaleString()}`,
+                    milestones: project.milestones.length,
+                    image: project.image,
+                    status: "Open"
+                  }}
                   onClick={() => {
                     setSelectedProject(project);
                     setCurrentView("project-detail");
                   }}
-                >
-                  <div>
-                    <h3 className="font-medium text-card-foreground group-hover:text-primary">
-                      {project.title}
-                    </h3>
-                    <div className="mt-1 flex flex-wrap gap-1">
-                      {project.skills.slice(0, 3).map((skill) => (
-                        <Badge key={skill} variant="outline" className="text-xs">
-                          {skill}
-                        </Badge>
-                      ))}
-                    </div>
-                  </div>
-                  <div className="text-right">
-                    <p className="font-semibold text-primary">
-                      ${project.budget.toLocaleString()}
-                    </p>
-                    <p className="text-xs text-muted-foreground">
-                      {project.milestones.length} milestones
-                    </p>
-                  </div>
-                </div>
+                />
               ))}
             </div>
           </CardContent>
