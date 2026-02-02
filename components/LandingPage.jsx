@@ -356,7 +356,7 @@ export default function LandingPage() {
       </header>
 
       {/* Hero Section matching the image */}
-      <section className="relative pt-16 pb-24 overflow-hidden">
+      <section id="hero" className="relative pt-16 pb-24 overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             {/* Left Content */}

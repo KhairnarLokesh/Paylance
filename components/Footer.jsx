@@ -41,13 +41,13 @@ const Footer = () => {
                     high-quality solutions that empower businesses and individuals.
                 </p>
                 <div className="flex space-x-5 pt-2">
-                    <a href="#" className="text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-teal-400 transition-transform transform hover:scale-110">
+                    <a href="https://github.com/KhairnarLokesh" target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-teal-400 transition-transform transform hover:scale-110">
                         <GitHubIcon size={28} />
                     </a>
                     <a href="#" className="text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-teal-400 transition-transform transform hover:scale-110">
                         <TwitterIcon size={28} />
                     </a>
-                    <a href="#" className="text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-teal-400 transition-transform transform hover:scale-110">
+                    <a href="http://linkedin.com/in/lokesh-khairnar" target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-teal-400 transition-transform transform hover:scale-110">
                         <LinkedInIcon size={28} />
                     </a>
                 </div>
@@ -58,29 +58,28 @@ const Footer = () => {
                 </h3>
                 <ul className="space-y-3">
                     <li>
-                        <a href="#" className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-teal-400 transition-colors duration-300">
+                        <button
+                            onClick={() => document.getElementById('hero')?.scrollIntoView({ behavior: 'smooth' })}
+                            className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-teal-400 transition-colors duration-300"
+                        >
                             Home
-                        </a>
+                        </button>
                     </li>
                     <li>
-                        <a href="#" className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-teal-400 transition-colors duration-300">
+                        <button
+                            onClick={() => document.getElementById('why-paylance')?.scrollIntoView({ behavior: 'smooth' })}
+                            className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-teal-400 transition-colors duration-300"
+                        >
                             About Us
-                        </a>
+                        </button>
                     </li>
                     <li>
-                        <a href="#" className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-teal-400 transition-colors duration-300">
+                        <button
+                            onClick={() => document.getElementById('demo-projects')?.scrollIntoView({ behavior: 'smooth' })}
+                            className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-teal-400 transition-colors duration-300"
+                        >
                             Services
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-teal-400 transition-colors duration-300">
-                            Portfolio
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-teal-400 transition-colors duration-300">
-                            Blog
-                        </a>
+                        </button>
                     </li>
                 </ul>
             </div>
@@ -121,13 +120,13 @@ const Footer = () => {
                     Contact Us
                 </h3>
                 <p className="text-gray-600 dark:text-gray-300">
-                    123 Tech Avenue, Innovation City, 98765
+                    Nashik, Maharashtra, India
                 </p>
                 <p className="text-gray-600 dark:text-gray-300">
-                    Email: info@paylance.com
+                    Email: lkhairnar580@gmail.com
                 </p>
                 <p className="text-gray-600 dark:text-gray-300">
-                    Phone: +1 (555) 123-4567
+                    Phone: +91 7666860132
                 </p>
             </div>
         </div>
