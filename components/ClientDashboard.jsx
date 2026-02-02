@@ -126,22 +126,22 @@ export default function ClientDashboard() {
             </div>
           ) : (
             <div className="space-y-4">
-              {activeProjects.slice(0, 3).map((project) => {
-                const completedMilestones = project.milestones.filter(
-                  (m) => m.status === "approved"
-                ).length;
-                const progress = (completedMilestones / project.milestones.length) * 100;
+                {activeProjects.slice(0, 3).map((project) => {
+                  const completedMilestones = project.milestones.filter(
+                    (m) => m.status === "approved"
+                  ).length;
+                  const progress = (completedMilestones / project.milestones.length) * 100;
 
-                return (
-                  <div
-                    key={project._id}
-                    className="group cursor-pointer rounded-lg border border-border p-4 transition-all hover:border-primary/50 hover:shadow-sm"
-                    onClick={() => {
-                      setSelectedProject(project);
-                      setCurrentView("project-detail");
-                    }}
-                  >
-                    <div className="flex items-start justify-between">
+                  return (
+                    <div
+                      key={project._id}
+                      className="group cursor-pointer rounded-lg border border-border p-4 transition-all hover:border-primary/50 hover:shadow-sm"
+                      onClick={() => {
+                        setSelectedProject(project);
+                        setCurrentView("project-detail");
+                      }}
+                    >
+                      <div className="flex items-start justify-between">
                       <div className="flex-1">
                         <h3 className="font-semibold text-card-foreground group-hover:text-primary">
                           {project.title}

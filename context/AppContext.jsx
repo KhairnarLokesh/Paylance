@@ -62,7 +62,7 @@ export function AppProvider({ children }) {
       if (parsed._id && !parsed.id) parsed.id = parsed._id;
 
       setUser(parsed);
-      setCurrentView(parsed.role === "client" ? "client-dashboard" : "freelancer-dashboard");
+      setCurrentView("landing");
       fetchUserData(parsed._id || parsed.id);
     }
     setLoading(false);
@@ -79,7 +79,7 @@ export function AppProvider({ children }) {
       if (data.success) {
         setUser(data.user);
         localStorage.setItem("paylance_user", JSON.stringify(data.user));
-        setCurrentView(data.user.role === "client" ? "client-dashboard" : "freelancer-dashboard");
+        setCurrentView("landing");
         await fetchUserData(data.user._id || data.user.id);
         return { success: true };
       }
@@ -100,7 +100,7 @@ export function AppProvider({ children }) {
       if (data.success) {
         setUser(data.user);
         localStorage.setItem("paylance_user", JSON.stringify(data.user));
-        setCurrentView(data.user.role === "client" ? "client-dashboard" : "freelancer-dashboard");
+        setCurrentView("landing");
         await fetchUserData(data.user._id || data.user.id);
         return { success: true };
       }
@@ -328,6 +328,12 @@ export function AppProvider({ children }) {
     return await res.json();
   };
 
+  const updateUser = (updatedFields) => {
+    const updatedUser = { ...user, ...updatedFields };
+    setUser(updatedUser);
+    localStorage.setItem("paylance_user", JSON.stringify(updatedUser));
+  };
+
   return (
     <AppContext.Provider
       value={{
@@ -358,6 +364,7 @@ export function AppProvider({ children }) {
         withdrawFunds,
         getProjectMessages,
         getUserById,
+        updateUser,
       }}
     >
       {children}

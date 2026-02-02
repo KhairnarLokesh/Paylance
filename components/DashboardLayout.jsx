@@ -22,6 +22,7 @@ import {
   Plus,
   Menu,
   X,
+  UserCircle,
 } from "lucide-react";
 import { useState } from "react";
 
@@ -66,7 +67,10 @@ export default function DashboardLayout({ children }) {
         <div className="flex h-full flex-col">
           {/* Logo */}
           <div className="flex h-16 items-center justify-between border-b border-sidebar-border px-4">
-            <div className="flex items-center gap-2">
+            <div
+              className="flex items-center gap-2 cursor-pointer hover:opacity-80 transition-opacity"
+              onClick={() => setCurrentView('landing')}
+            >
               <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary">
                 <Briefcase className="h-5 w-5 text-primary-foreground" />
               </div>
@@ -175,19 +179,41 @@ export default function DashboardLayout({ children }) {
             {/* User Menu */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon">
-                  <User className="h-5 w-5" />
+                <Button variant="ghost" size="icon" className="h-10 w-10 rounded-full hover:bg-slate-100 transition-colors border border-slate-100">
+                  <User className="h-5 w-5 text-slate-600" />
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <div className="p-2">
-                  <p className="text-sm font-medium text-foreground">{user?.name}</p>
-                  <p className="text-xs text-muted-foreground">{user?.email}</p>
+              <DropdownMenuContent align="end" className="w-72 p-2 rounded-2xl shadow-2xl border-slate-100">
+                <div className="px-4 py-4">
+                  <p className="text-lg font-bold text-slate-900 leading-tight">{user?.name}</p>
+                  <p className="text-sm text-slate-500 truncate">{user?.email}</p>
                 </div>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={logout} className="text-destructive">
-                  <LogOut className="mr-2 h-4 w-4" />
-                  Sign Out
+                <div className="h-px bg-slate-100 my-2 mx-2" />
+
+                <DropdownMenuItem
+                  onClick={() => setCurrentView('profile')}
+                  className="flex items-center gap-3 p-3 rounded-xl cursor-pointer hover:bg-slate-50 focus:bg-slate-50 text-slate-600 focus:text-slate-900 transition-colors outline-none"
+                >
+                  <UserCircle className="h-5 w-5 text-slate-400" />
+                  <span className="font-medium">My Profile</span>
+                </DropdownMenuItem>
+
+                <DropdownMenuItem
+                  onClick={() => setCurrentView(user?.role === 'client' ? 'client-dashboard' : 'freelancer-dashboard')}
+                  className="flex items-center gap-3 p-3 rounded-xl cursor-pointer hover:bg-slate-50 focus:bg-slate-50 text-slate-600 focus:text-slate-900 transition-colors outline-none"
+                >
+                  <LayoutDashboard className="h-5 w-5 text-slate-400" />
+                  <span className="font-medium">
+                    {user?.role === 'freelancer' ? 'Innovator Dashboard' : 'Client Dashboard'}
+                  </span>
+                </DropdownMenuItem>
+
+                <DropdownMenuItem
+                  onClick={logout}
+                  className="flex items-center gap-3 p-3 rounded-xl cursor-pointer hover:bg-slate-50 focus:bg-slate-50 text-slate-600 focus:text-slate-900 transition-colors outline-none group"
+                >
+                  <LogOut className="h-5 w-5 text-slate-400 group-hover:text-red-500 transition-colors" />
+                  <span className="font-medium group-hover:text-red-500 transition-colors">Logout</span>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>

@@ -15,6 +15,7 @@ import {
 } from "@/components/ProjectPages";
 import MessagesPage from "@/components/MessagesPage";
 import WalletPage from "@/components/WalletPage";
+import ProfilePage from "@/components/ProfilePage";
 
 function AppContent() {
   const { currentView, user } = useApp();
@@ -34,6 +35,8 @@ function AppContent() {
         return <ClientDashboard />;
       case "freelancer-dashboard":
         return <FreelancerDashboard />;
+      case "profile":
+        return <ProfilePage />;
       case "create-project":
         return <CreateProjectPage />;
       case "browse-projects":
