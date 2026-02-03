@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import Footer from "@/components/Footer";
 import ProjectCard from "@/components/ProjectCard";
 import Services from "@/components/Services";
+import ScrollAnimation from "@/components/ScrollAnimation";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -443,7 +444,7 @@ export default function LandingPage() {
                 key={index}
                 onClick={() => setCurrentSlide(index)}
                 className={`h-2 rounded-full transition-all ${index === currentSlide
-                  ? "w-8 bg-blue-600"
+                  ? "w-2 bg-blue-600"
                   : "w-2 bg-slate-800 hover:bg-slate-700"
                   }`}
                 aria-label={`Go to slide ${index + 1}`}
@@ -472,13 +473,13 @@ export default function LandingPage() {
               { icon: Trophy, title: "Vetted Talent", desc: "Work with top-tier professionals." },
               { icon: CheckCircle, title: "Milestone Tracking", desc: "Clear deliverables and deadlines." }
             ].map((item, i) => (
-              <div key={i} className="bg-slate-900 p-6 rounded-2xl shadow-sm border border-slate-800 hover:border-slate-700 hover:shadow-md transition-all hover:-translate-y-1 group">
+              <ScrollAnimation key={i} delay={i * 100} className="bg-slate-900 p-6 rounded-2xl shadow-sm border border-slate-800 hover:border-slate-700 hover:shadow-md transition-all hover:-translate-y-1 group">
                 <div className="h-12 w-12 bg-slate-800 rounded-xl flex items-center justify-center text-blue-500 mb-4 group-hover:scale-110 transition-transform duration-300">
                   <item.icon className="h-6 w-6" />
                 </div>
                 <h3 className="font-bold text-white mb-2">{item.title}</h3>
                 <p className="text-sm text-slate-400">{item.desc}</p>
-              </div>
+              </ScrollAnimation>
             ))}
           </div>
         </div>
@@ -501,9 +502,9 @@ export default function LandingPage() {
           <div className="relative group/slider">
             <div ref={scrollRef} className="flex gap-6 overflow-x-auto pb-8 cursor-grab active:cursor-grabbing snap-x snap-mandatory no-scrollbar scroll-smooth">
               {demoProjects.map((project, idx) => (
-                <div key={idx} className="min-w-[280px] md:min-w-[350px] snap-center">
+                <ScrollAnimation key={idx} delay={idx * 100} className="min-w-[280px] md:min-w-[350px] snap-center">
                   <ProjectCard project={project} />
-                </div>
+                </ScrollAnimation>
               ))}
             </div>
 

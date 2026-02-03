@@ -1,3 +1,4 @@
+import ScrollAnimation from "@/components/ScrollAnimation";
 import {
     Code,
     Globe,
@@ -72,8 +73,9 @@ export default function Services() {
 
                 <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
                     {services.map((service, index) => (
-                        <div
+                        <ScrollAnimation
                             key={index}
+                            delay={index * 50}
                             className="group p-6 rounded-2xl bg-slate-900/50 border border-slate-800 hover:border-slate-700 hover:bg-slate-900 transition-all duration-300 hover:-translate-y-1"
                         >
                             <div className="h-12 w-12 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
@@ -85,7 +87,7 @@ export default function Services() {
                             <p className="text-slate-400 text-sm leading-relaxed">
                                 {service.description}
                             </p>
-                        </div>
+                        </ScrollAnimation>
                     ))}
                 </div>
             </div>
