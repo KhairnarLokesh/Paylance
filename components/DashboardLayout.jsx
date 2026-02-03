@@ -50,7 +50,7 @@ export default function DashboardLayout({ children }) {
   const navItems = user?.role === "client" ? clientNav : freelancerNav;
 
   return (
-    <div className="flex min-h-screen bg-background">
+    <div className="flex h-screen bg-background overflow-hidden">
       {/* Mobile Sidebar Overlay */}
       {sidebarOpen && (
         <div
@@ -85,7 +85,7 @@ export default function DashboardLayout({ children }) {
           </div>
 
           {/* Navigation */}
-          <nav className="flex-1 space-y-1 p-4">
+          <nav className="flex-1 space-y-1 p-4 overflow-y-auto no-scrollbar">
             {navItems.map((item) => (
               <button
                 key={item.id}
