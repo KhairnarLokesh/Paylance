@@ -26,7 +26,10 @@ import {
 export default function ProfilePage() {
     const { user, updateUser, setCurrentView, projects } = useApp();
     const myProjects = user?.role === 'client'
-        ? projects.filter(p => p.clientId === user._id || p.clientId === user.id)
+        ? projects.filter(p => {
+            const pClientId = p.clientId?._id || p.clientId;
+            return pClientId && String(pClientId) === String(user._id || user.id);
+        })
         : [];
     const fileInputRef = useRef(null);
     const bannerInputRef = useRef(null);

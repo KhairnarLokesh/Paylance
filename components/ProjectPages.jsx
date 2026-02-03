@@ -129,22 +129,27 @@ export function CreateProjectPage() {
     setLoading(true);
     await new Promise((r) => setTimeout(r, 500));
 
-    await createProject({
-      title: formData.title,
-      description: formData.description,
-      category: formData.category,
-      skills: formData.skills,
-      image: formData.image || "https://images.unsplash.com/photo-1516116216624-53e697fedbea?auto=format&fit=crop&q=80&w=800",
-      milestones: formData.milestones.map((m) => ({
-        title: m.title,
-        amount: Number.parseFloat(m.amount),
-        deadline: m.deadline,
-        status: "pending",
-      })),
-    });
-
-    setLoading(false);
-    setCurrentView("my-projects");
+    try {
+      await createProject({
+        title: formData.title,
+        description: formData.description,
+        category: formData.category,
+        skills: formData.skills,
+        budget: totalBudget,
+        image: formData.image || "https://images.unsplash.com/photo-1516116216624-53e697fedbea?auto=format&fit=crop&q=80&w=800",
+        milestones: formData.milestones.map((m) => ({
+          title: m.title,
+          amount: Number.parseFloat(m.amount),
+          deadline: m.deadline,
+          status: "pending",
+        })),
+      });
+      setCurrentView("my-projects");
+    } catch (err) {
+      alert(err.message || "Failed to post project");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -421,8 +426,11 @@ export function MyProjectsPage() {
   const { user, projects, setCurrentView, setSelectedProject } = useApp();
   const [filter, setFilter] = useState("all");
 
-  const userId = user._id || user.id;
-  const myProjects = projects.filter((p) => p.clientId === userId || p.clientId?._id === userId);
+  const userId = user?._id || user?.id;
+  const myProjects = projects.filter((p) => {
+    const pClientId = p.clientId?._id || p.clientId;
+    return pClientId && String(pClientId) === String(userId);
+  });
 
   const filteredProjects =
     filter === "all" ? myProjects : myProjects.filter((p) => p.status === filter);
@@ -650,11 +658,13 @@ export function ProjectDetailPage() {
     );
   }
 
-  const userId = user._id || user.id;
-  const isClient = user.role === "client" && (project.clientId === userId || project.clientId?._id === userId);
-  const isAssignedFreelancer = project.assignedTo === userId || project.assignedTo?._id === userId;
-  const hasApplied = project.applications.some((a) => a.freelancerId === userId || a.freelancerId?._id === userId);
-  const myApplication = project.applications.find((a) => a.freelancerId === userId || a.freelancerId?._id === userId);
+  const userId = user?._id || user?.id;
+  const isClient = user?.role === "client" && (
+    String(project.clientId?._id || project.clientId) === String(userId)
+  );
+  const isAssignedFreelancer = project.assignedTo && String(project.assignedTo?._id || project.assignedTo) === String(userId);
+  const hasApplied = project.applications.some((a) => String(a.freelancerId?._id || a.freelancerId) === String(userId));
+  const myApplication = project.applications.find((a) => String(a.freelancerId?._id || a.freelancerId) === String(userId));
   // const assignedFreelancer = project.assignedTo ? getUserById(project.assignedTo?._id || project.assignedTo) : null;
   const [assignedFreelancer, setAssignedFreelancer] = useState(null);
 

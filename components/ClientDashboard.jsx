@@ -17,8 +17,11 @@ import ProjectCard from "@/components/ProjectCard";
 export default function ClientDashboard() {
   const { user, projects, setCurrentView, setSelectedProject } = useApp();
 
-  const userId = user._id || user.id;
-  const myProjects = projects.filter((p) => p.clientId === userId || p.clientId?._id === userId);
+  const userId = user?._id || user?.id;
+  const myProjects = projects.filter((p) => {
+    const pClientId = p.clientId?._id || p.clientId;
+    return pClientId && String(pClientId) === String(userId);
+  });
   const openProjects = myProjects.filter((p) => p.status === "open");
   const activeProjects = myProjects.filter((p) => p.status === "in_progress");
   const completedProjects = myProjects.filter((p) => p.status === "completed");

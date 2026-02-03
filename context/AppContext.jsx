@@ -126,13 +126,20 @@ export function AppProvider({ children }) {
       const res = await fetch('/api/projects', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...projectData, clientId: user._id || user.id })
+        body: JSON.stringify({ ...projectData, clientId: user?._id || user?.id })
       });
-      const newProject = await res.json();
-      setProjects([newProject, ...projects]);
-      return newProject;
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error || 'Failed to create project');
+      }
+
+      setProjects(prev => [data, ...prev]);
+      return data;
     } catch (error) {
       console.error("Error creating project:", error);
+      throw error;
     }
   };
 
