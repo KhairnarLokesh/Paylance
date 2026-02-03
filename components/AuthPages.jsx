@@ -68,56 +68,55 @@ export function LoginPage() {
         <div className="absolute top-0 left-0 w-full h-full bg-[linear-gradient(30deg,#1e4db7_12%,transparent_12.5%,transparent_87%,#1e4db7_87.5%,#1e4db7),linear-gradient(150deg,#1e4db7_12%,transparent_12.5%,transparent_87%,#1e4db7_87.5%,#1e4db7),linear-gradient(30deg,#1e4db7_12%,transparent_12.5%,transparent_87%,#1e4db7_87.5%,#1e4db7),linear-gradient(150deg,#1e4db7_12%,transparent_12.5%,transparent_87%,#1e4db7_87.5%,#1e4db7),linear-gradient(60deg,#2563eb_25%,transparent_25.5%,transparent_75%,#2563eb_75.5%,#2563eb),linear-gradient(60deg,#2563eb_25%,transparent_25.5%,transparent_75%,#2563eb_75.5%,#2563eb)] bg-[length:80px_140px]" />
       </div>
 
-      <Card className="w-full max-w-[550px] border-none shadow-2xl rounded-[2.5rem] bg-white pt-10 pb-6 px-4 z-10 transition-all duration-300 hover:shadow-[0_20px_50px_rgba(0,0,0,0.2)]">
-        <CardHeader className="space-y-6 text-center pb-2 px-6">
+      <Card className="w-full max-w-[350px] border-none shadow-2xl rounded-[1.5rem] bg-white pt-6 pb-5 px-4 z-10 transition-all duration-300 hover:shadow-[0_20px_50px_rgba(0,0,0,0.2)]">
+        <CardHeader className="space-y-4 text-center pb-2 px-2">
           {/* Logo Section */}
-          <div className="flex flex-col items-center gap-2 mb-2">
-            <div className="flex items-center gap-3">
-              <div className="h-12 w-12 bg-[#1e4db7] rounded-xl flex items-center justify-center shadow-lg transform -rotate-6 transition-transform hover:rotate-0 duration-300">
-                <Briefcase className="h-7 w-7 text-white" />
+          <div className="flex flex-col items-center gap-2 mb-0">
+            <div className="flex items-center gap-2">
+              <div className="h-8 w-8 bg-[#1e4db7] rounded-lg flex items-center justify-center shadow-lg transform -rotate-6 transition-transform hover:rotate-0 duration-300">
+                <Briefcase className="h-4 w-4 text-white" />
               </div>
-              <span className="text-4xl font-black tracking-tighter text-[#1e4db7] italic">PAYLANCE</span>
+              <span className="text-2xl font-black tracking-tighter text-[#1e4db7] italic">PAYLANCE</span>
             </div>
           </div>
 
-          <div className="space-y-3">
-            <CardTitle className="text-[2rem] font-bold text-slate-800 tracking-tight">Log In to Your Account</CardTitle>
-            <CardDescription className="text-slate-500 text-lg font-medium leading-relaxed max-w-[90%] mx-auto">
-              Log in to your Paylance account and continue your innovation adventure.
+          <div className="space-y-1">
+            <CardTitle className="text-xl font-bold text-slate-800 tracking-tight">Log In</CardTitle>
+            <CardDescription className="text-slate-500 text-xs font-medium leading-relaxed max-w-[95%] mx-auto">
+              Welcome back! Please enter your details.
             </CardDescription>
           </div>
         </CardHeader>
 
-        <CardContent className="px-10">
+        <CardContent className="px-6">
           {/* Social Logins */}
-          <div className="flex justify-center gap-6 mb-8 pt-4">
-            <button className="h-16 w-16 flex items-center justify-center rounded-full bg-slate-50 border border-slate-100 shadow-sm hover:bg-white hover:border-slate-200 transition-all active:scale-95">
+          <div className="flex justify-center gap-3 mb-4 pt-1">
+            <button className="h-10 w-10 flex items-center justify-center rounded-full bg-slate-50 border border-slate-100 shadow-sm hover:bg-white hover:border-slate-200 transition-all active:scale-95">
               <GoogleIcon />
             </button>
-            <button className="h-16 w-16 flex items-center justify-center rounded-full bg-slate-50 border border-slate-100 shadow-sm hover:bg-white hover:border-slate-200 transition-all active:scale-95">
-              <Github className="h-8 w-8 text-black" />
+            <button className="h-10 w-10 flex items-center justify-center rounded-full bg-slate-50 border border-slate-100 shadow-sm hover:bg-white hover:border-slate-200 transition-all active:scale-95">
+              <Github className="h-5 w-5 text-black" />
             </button>
           </div>
 
-          <div className="relative flex items-center mb-8">
+          <div className="relative flex items-center mb-4">
             <div className="flex-grow border-t border-slate-100"></div>
-            <span className="flex-shrink mx-4 text-slate-400 font-medium text-sm">Or continue with</span>
+            <span className="flex-shrink mx-3 text-slate-400 font-medium text-[10px] uppercase tracking-wider">Or continue with</span>
             <div className="flex-grow border-t border-slate-100"></div>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-3">
             {error && (
-              <div className="flex items-center gap-2 rounded-xl bg-red-50 px-4 py-3 text-sm text-red-600 border border-red-100 animate-in fade-in slide-in-from-top-2">
-                <AlertCircle className="h-4 w-4" />
+              <div className="flex items-center gap-2 rounded-xl bg-red-50 px-3 py-2 text-xs text-red-600 border border-red-100 animate-in fade-in slide-in-from-top-2">
+                <AlertCircle className="h-3.5 w-3.5" />
                 {error}
               </div>
             )}
 
-            <div className="space-y-2.5">
+            <div className="space-y-1">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-1.5">
-                  <Label htmlFor="email" className="text-sm font-bold text-slate-700">Email <span className="text-red-500">*</span></Label>
-                  <Info className="h-3.5 w-3.5 text-slate-300 cursor-help" />
+                  <Label htmlFor="email" className="text-xs font-bold text-slate-700">Email <span className="text-red-500">*</span></Label>
                 </div>
               </div>
               <div className="relative">
@@ -128,16 +127,15 @@ export function LoginPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
-                  className="h-14 rounded-xl border-slate-200 bg-slate-50/50 px-5 text-slate-800 placeholder:text-slate-400 focus:bg-white focus:border-[#1e4db7] focus:ring-4 focus:ring-blue-50 transition-all text-base"
+                  className="h-9 rounded-xl border-slate-200 bg-slate-50/50 px-3 text-slate-800 placeholder:text-slate-400 focus:bg-white focus:border-[#1e4db7] focus:ring-4 focus:ring-blue-50 transition-all text-xs"
                   maxLength={256}
                 />
               </div>
-              <p className="text-right text-[10px] font-bold text-slate-300 tracking-wider uppercase">{email.length}/256</p>
             </div>
 
-            <div className="space-y-2.5">
+            <div className="space-y-1">
               <div className="flex items-center justify-between">
-                <Label htmlFor="password" className="text-sm font-bold text-slate-700">Password <span className="text-red-500">*</span></Label>
+                <Label htmlFor="password" className="text-xs font-bold text-slate-700">Password <span className="text-red-500">*</span></Label>
               </div>
               <div className="relative">
                 <Input
@@ -147,33 +145,33 @@ export function LoginPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
-                  className="h-14 rounded-xl border-slate-200 bg-slate-50/50 px-5 pr-14 text-slate-800 placeholder:text-slate-400 focus:bg-white focus:border-[#1e4db7] focus:ring-4 focus:ring-blue-50 transition-all text-base"
+                  className="h-9 rounded-xl border-slate-200 bg-slate-50/50 px-3 pr-10 text-slate-800 placeholder:text-slate-400 focus:bg-white focus:border-[#1e4db7] focus:ring-4 focus:ring-blue-50 transition-all text-xs"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
                 >
-                  {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                  {showPassword ? <EyeOff className="h-3.5 w-3.5" /> : <Eye className="h-3.5 w-3.5" />}
                 </button>
               </div>
             </div>
 
             <Button
               type="submit"
-              className="w-full h-14 bg-[#1e4db7] hover:bg-[#1a43a1] text-white rounded-xl text-lg font-bold shadow-lg shadow-blue-200 transition-all active:scale-[0.98] mt-4"
+              className="w-full h-10 bg-[#1e4db7] hover:bg-[#1a43a1] text-white rounded-xl text-sm font-bold shadow-lg shadow-blue-200 transition-all active:scale-[0.98] mt-1"
               disabled={loading}
             >
               {loading ? (
                 <div className="flex items-center gap-2">
-                  <HourglassSpinner className="w-6 h-6 text-blue-400" />
+                  <HourglassSpinner className="w-5 h-5 text-blue-400" />
                   <span>Logging in...</span>
                 </div>
               ) : "Login"}
             </Button>
 
-            <div className="text-center pt-2">
-              <p className="text-slate-500 font-medium">
+            <div className="text-center pt-1">
+              <p className="text-slate-500 text-sm font-medium">
                 Don't have an account?{" "}
                 <button
                   type="button"
@@ -188,9 +186,9 @@ export function LoginPage() {
 
           <button
             onClick={() => setCurrentView("landing")}
-            className="mt-8 flex w-full items-center justify-center gap-2 text-sm font-bold text-slate-400 hover:text-slate-600 transition-colors uppercase tracking-widest"
+            className="mt-6 flex w-full items-center justify-center gap-2 text-xs font-bold text-slate-400 hover:text-slate-600 transition-colors uppercase tracking-widest"
           >
-            <ArrowLeft className="h-4 w-4" />
+            <ArrowLeft className="h-3.5 w-3.5" />
             Back to home
           </button>
         </CardContent>
@@ -263,82 +261,82 @@ export function RegisterPage() {
         <div className="absolute top-0 left-0 w-full h-full bg-[linear-gradient(30deg,#1e4db7_12%,transparent_12.5%,transparent_87%,#1e4db7_87.5%,#1e4db7),linear-gradient(150deg,#1e4db7_12%,transparent_12.5%,transparent_87%,#1e4db7_87.5%,#1e4db7),linear-gradient(30deg,#1e4db7_12%,transparent_12.5%,transparent_87%,#1e4db7_87.5%,#1e4db7),linear-gradient(150deg,#1e4db7_12%,transparent_12.5%,transparent_87%,#1e4db7_87.5%,#1e4db7),linear-gradient(60deg,#2563eb_25%,transparent_25.5%,transparent_75%,#2563eb_75.5%,#2563eb),linear-gradient(60deg,#2563eb_25%,transparent_25.5%,transparent_75%,#2563eb_75.5%,#2563eb)] bg-[length:80px_140px]" />
       </div>
 
-      <Card className="w-full max-w-[550px] border-none shadow-2xl rounded-[2.5rem] bg-white pt-10 pb-6 px-4 z-10 transition-all duration-300 hover:shadow-[0_20px_50px_rgba(0,0,0,0.2)]">
-        <CardHeader className="space-y-6 text-center pb-2 px-6">
+      <Card className="w-full max-w-[350px] border-none shadow-2xl rounded-[1.5rem] bg-white pt-6 pb-5 px-4 z-10 transition-all duration-300 hover:shadow-[0_20px_50px_rgba(0,0,0,0.2)]">
+        <CardHeader className="space-y-4 text-center pb-2 px-2">
           {/* Logo Section */}
-          <div className="flex flex-col items-center gap-2 mb-2">
-            <div className="flex items-center gap-3">
-              <div className="h-12 w-12 bg-[#1e4db7] rounded-xl flex items-center justify-center shadow-lg transform -rotate-6 transition-transform hover:rotate-0 duration-300">
-                <Briefcase className="h-7 w-7 text-white" />
+          <div className="flex flex-col items-center gap-2 mb-0">
+            <div className="flex items-center gap-2">
+              <div className="h-8 w-8 bg-[#1e4db7] rounded-lg flex items-center justify-center shadow-lg transform -rotate-6 transition-transform hover:rotate-0 duration-300">
+                <Briefcase className="h-4 w-4 text-white" />
               </div>
-              <span className="text-4xl font-black tracking-tighter text-[#1e4db7] italic">PAYLANCE</span>
+              <span className="text-2xl font-black tracking-tighter text-[#1e4db7] italic">PAYLANCE</span>
             </div>
           </div>
 
-          <div className="space-y-3">
-            <CardTitle className="text-[2rem] font-bold text-slate-800 tracking-tight">Create an account</CardTitle>
-            <CardDescription className="text-slate-500 text-lg font-medium leading-relaxed max-w-[90%] mx-auto">
+          <div className="space-y-1">
+            <CardTitle className="text-xl font-bold text-slate-800 tracking-tight">Create account</CardTitle>
+            <CardDescription className="text-slate-500 text-xs font-medium leading-relaxed max-w-[95%] mx-auto">
               Join Paylance and start your adventure today.
             </CardDescription>
           </div>
         </CardHeader>
 
-        <CardContent className="px-10">
-          <form onSubmit={handleSubmit} className="space-y-6">
+        <CardContent className="px-6">
+          <form onSubmit={handleSubmit} className="space-y-3">
             {error && (
-              <div className="flex items-center gap-2 rounded-xl bg-red-50 px-4 py-3 text-sm text-red-600 border border-red-100 animate-in fade-in slide-in-from-top-2">
-                <AlertCircle className="h-4 w-4" />
+              <div className="flex items-center gap-2 rounded-xl bg-red-50 px-3 py-2 text-xs text-red-600 border border-red-100 animate-in fade-in slide-in-from-top-2">
+                <AlertCircle className="h-3.5 w-3.5" />
                 {error}
               </div>
             )}
 
             {/* Role Selection */}
-            <div className="space-y-3">
-              <Label className="text-sm font-bold text-slate-700">I want to</Label>
-              <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-1">
+              <Label className="text-xs font-bold text-slate-700">I want to</Label>
+              <div className="grid grid-cols-2 gap-2">
                 <button
                   type="button"
                   onClick={() => updateField("role", "client")}
-                  className={`flex flex-col items-center gap-2 rounded-2xl border-2 p-4 transition-all ${formData.role === "client"
-                    ? "border-[#1e4db7] bg-blue-50/50 ring-4 ring-blue-50/50"
+                  className={`flex flex-col items-center gap-1.5 rounded-xl border-2 p-2 transition-all ${formData.role === "client"
+                    ? "border-[#1e4db7] bg-blue-50/50 ring-2 ring-blue-50/50"
                     : "border-slate-100 bg-slate-50/50 hover:border-blue-200"
                     }`}
                 >
                   <Building2
-                    className={`h-7 w-7 ${formData.role === "client" ? "text-[#1e4db7]" : "text-slate-400"}`}
+                    className={`h-4 w-4 ${formData.role === "client" ? "text-[#1e4db7]" : "text-slate-400"}`}
                   />
-                  <span className={`text-sm font-bold ${formData.role === "client" ? "text-[#1e4db7]" : "text-slate-500"}`}>Hire Talent</span>
+                  <span className={`text-[10px] font-bold ${formData.role === "client" ? "text-[#1e4db7]" : "text-slate-500"}`}>Hire Talent</span>
                 </button>
                 <button
                   type="button"
                   onClick={() => updateField("role", "freelancer")}
-                  className={`flex flex-col items-center gap-2 rounded-2xl border-2 p-4 transition-all ${formData.role === "freelancer"
-                    ? "border-[#1e4db7] bg-blue-50/50 ring-4 ring-blue-50/50"
+                  className={`flex flex-col items-center gap-1.5 rounded-xl border-2 p-2 transition-all ${formData.role === "freelancer"
+                    ? "border-[#1e4db7] bg-blue-50/50 ring-2 ring-blue-50/50"
                     : "border-slate-100 bg-slate-50/50 hover:border-blue-200"
                     }`}
                 >
                   <User
-                    className={`h-7 w-7 ${formData.role === "freelancer" ? "text-[#1e4db7]" : "text-slate-400"}`}
+                    className={`h-4 w-4 ${formData.role === "freelancer" ? "text-[#1e4db7]" : "text-slate-400"}`}
                   />
-                  <span className={`text-sm font-bold ${formData.role === "freelancer" ? "text-[#1e4db7]" : "text-slate-500"}`}>Find Work</span>
+                  <span className={`text-[10px] font-bold ${formData.role === "freelancer" ? "text-[#1e4db7]" : "text-slate-500"}`}>Find Work</span>
                 </button>
               </div>
             </div>
 
-            <div className="space-y-2.5">
-              <Label htmlFor="name" className="text-sm font-bold text-slate-700">Full Name <span className="text-red-500">*</span></Label>
+            <div className="space-y-1">
+              <Label htmlFor="name" className="text-xs font-bold text-slate-700">Full Name <span className="text-red-500">*</span></Label>
               <Input
                 id="name"
                 placeholder="John Doe"
                 value={formData.name}
                 onChange={(e) => updateField("name", e.target.value)}
                 required
-                className="h-14 rounded-xl border-slate-200 bg-slate-50/50 px-5 text-slate-800 placeholder:text-slate-400 focus:bg-white focus:border-[#1e4db7] focus:ring-4 focus:ring-blue-50 transition-all text-base"
+                className="h-9 rounded-xl border-slate-200 bg-slate-50/50 px-3 text-slate-800 placeholder:text-slate-400 focus:bg-white focus:border-[#1e4db7] focus:ring-4 focus:ring-blue-50 transition-all text-xs"
               />
             </div>
 
-            <div className="space-y-2.5">
-              <Label htmlFor="email" className="text-sm font-bold text-slate-700">Email Address <span className="text-red-500">*</span></Label>
+            <div className="space-y-1">
+              <Label htmlFor="email" className="text-xs font-bold text-slate-700">Email Address <span className="text-red-500">*</span></Label>
               <Input
                 id="email"
                 type="email"
@@ -346,12 +344,12 @@ export function RegisterPage() {
                 value={formData.email}
                 onChange={(e) => updateField("email", e.target.value)}
                 required
-                className="h-14 rounded-xl border-slate-200 bg-slate-50/50 px-5 text-slate-800 placeholder:text-slate-400 focus:bg-white focus:border-[#1e4db7] focus:ring-4 focus:ring-blue-50 transition-all text-base"
+                className="h-9 rounded-xl border-slate-200 bg-slate-50/50 px-3 text-slate-800 placeholder:text-slate-400 focus:bg-white focus:border-[#1e4db7] focus:ring-4 focus:ring-blue-50 transition-all text-xs"
               />
             </div>
 
-            <div className="space-y-2.5">
-              <Label htmlFor="password" className="text-sm font-bold text-slate-700">Password <span className="text-red-500">*</span></Label>
+            <div className="space-y-1">
+              <Label htmlFor="password" className="text-xs font-bold text-slate-700">Password <span className="text-red-500">*</span></Label>
               <div className="relative">
                 <Input
                   id="password"
@@ -360,20 +358,20 @@ export function RegisterPage() {
                   value={formData.password}
                   onChange={(e) => updateField("password", e.target.value)}
                   required
-                  className="h-14 rounded-xl border-slate-200 bg-slate-50/50 px-5 pr-14 text-slate-800 placeholder:text-slate-400 focus:bg-white focus:border-[#1e4db7] focus:ring-4 focus:ring-blue-50 transition-all text-base"
+                  className="h-9 rounded-xl border-slate-200 bg-slate-50/50 px-3 pr-10 text-slate-800 placeholder:text-slate-400 focus:bg-white focus:border-[#1e4db7] focus:ring-4 focus:ring-blue-50 transition-all text-xs"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
                 >
-                  {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                  {showPassword ? <EyeOff className="h-3.5 w-3.5" /> : <Eye className="h-3.5 w-3.5" />}
                 </button>
               </div>
             </div>
 
-            <div className="space-y-2.5">
-              <Label htmlFor="confirmPassword" className="text-sm font-bold text-slate-700">Confirm Password <span className="text-red-500">*</span></Label>
+            <div className="space-y-1">
+              <Label htmlFor="confirmPassword" className="text-xs font-bold text-slate-700">Confirm Password <span className="text-red-500">*</span></Label>
               <Input
                 id="confirmPassword"
                 type="password"
@@ -381,38 +379,38 @@ export function RegisterPage() {
                 value={formData.confirmPassword}
                 onChange={(e) => updateField("confirmPassword", e.target.value)}
                 required
-                className="h-14 rounded-xl border-slate-200 bg-slate-50/50 px-5 text-slate-800 placeholder:text-slate-400 focus:bg-white focus:border-[#1e4db7] focus:ring-4 focus:ring-blue-50 transition-all text-base"
+                className="h-9 rounded-xl border-slate-200 bg-slate-50/50 px-3 text-slate-800 placeholder:text-slate-400 focus:bg-white focus:border-[#1e4db7] focus:ring-4 focus:ring-blue-50 transition-all text-xs"
               />
             </div>
 
             {formData.role === "freelancer" && (
-              <div className="space-y-2.5 animate-in fade-in slide-in-from-top-2">
-                <Label htmlFor="skills" className="text-sm font-bold text-slate-700">Skills (comma separated)</Label>
+              <div className="space-y-1 animate-in fade-in slide-in-from-top-2">
+                <Label htmlFor="skills" className="text-xs font-bold text-slate-700">Skills (comma separated)</Label>
                 <Input
                   id="skills"
                   placeholder="React, Node.js, MongoDB"
                   value={formData.skills}
                   onChange={(e) => updateField("skills", e.target.value)}
-                  className="h-14 rounded-xl border-slate-200 bg-slate-50/50 px-5 text-slate-800 placeholder:text-slate-400 focus:bg-white focus:border-[#1e4db7] focus:ring-4 focus:ring-blue-50 transition-all text-base"
+                  className="h-9 rounded-xl border-slate-200 bg-slate-50/50 px-3 text-slate-800 placeholder:text-slate-400 focus:bg-white focus:border-[#1e4db7] focus:ring-4 focus:ring-blue-50 transition-all text-xs"
                 />
               </div>
             )}
 
             <Button
               type="submit"
-              className="w-full h-14 bg-[#1e4db7] hover:bg-[#1a43a1] text-white rounded-xl text-lg font-bold shadow-lg shadow-blue-200 transition-all active:scale-[0.98] mt-4"
+              className="w-full h-10 bg-[#1e4db7] hover:bg-[#1a43a1] text-white rounded-xl text-sm font-bold shadow-lg shadow-blue-200 transition-all active:scale-[0.98] mt-1"
               disabled={loading}
             >
               {loading ? (
                 <div className="flex items-center gap-2">
-                  <HourglassSpinner className="w-6 h-6 text-blue-400" />
+                  <HourglassSpinner className="w-5 h-5 text-blue-400" />
                   <span>Creating account...</span>
                 </div>
               ) : "Create Account"}
             </Button>
 
-            <div className="text-center pt-2">
-              <p className="text-slate-500 font-medium">
+            <div className="text-center pt-1">
+              <p className="text-slate-500 text-sm font-medium">
                 Already have an account?{" "}
                 <button
                   type="button"
@@ -427,9 +425,9 @@ export function RegisterPage() {
 
           <button
             onClick={() => setCurrentView("landing")}
-            className="mt-8 flex w-full items-center justify-center gap-2 text-sm font-bold text-slate-400 hover:text-slate-600 transition-colors uppercase tracking-widest"
+            className="mt-4 flex w-full items-center justify-center gap-2 text-[10px] font-bold text-slate-400 hover:text-slate-600 transition-colors uppercase tracking-widest"
           >
-            <ArrowLeft className="h-4 w-4" />
+            <ArrowLeft className="h-3 w-3" />
             Back to home
           </button>
         </CardContent>
