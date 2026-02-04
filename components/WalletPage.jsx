@@ -106,7 +106,7 @@ export default function WalletPage() {
                 Available Balance
               </div>
               <p className="mt-2 text-4xl font-bold text-card-foreground">
-                ${user.walletBalance?.toLocaleString() || 0}
+                ₹{user.walletBalance?.toLocaleString() || 0}
               </p>
             </div>
             <div className="flex gap-3">
@@ -135,7 +135,7 @@ export default function WalletPage() {
                   <div>
                     <p className="text-sm text-muted-foreground">Total Earnings</p>
                     <p className="mt-1 text-2xl font-bold text-success">
-                      ${totalEarnings.toLocaleString()}
+                      ₹{totalEarnings.toLocaleString()}
                     </p>
                   </div>
                   <div className="rounded-xl bg-success/10 p-3">
@@ -149,7 +149,7 @@ export default function WalletPage() {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm text-muted-foreground">Pending</p>
-                    <p className="mt-1 text-2xl font-bold text-card-foreground">$0</p>
+                    <p className="mt-1 text-2xl font-bold text-card-foreground">₹0</p>
                   </div>
                   <div className="rounded-xl bg-warning/10 p-3">
                     <Clock className="h-6 w-6 text-warning" />
@@ -163,7 +163,7 @@ export default function WalletPage() {
                   <div>
                     <p className="text-sm text-muted-foreground">Withdrawn</p>
                     <p className="mt-1 text-2xl font-bold text-card-foreground">
-                      ${transactions
+                      ₹{transactions
                         .filter((t) => t.type === "withdrawal")
                         .reduce((sum, t) => sum + t.amount, 0)
                         .toLocaleString()}
@@ -184,7 +184,7 @@ export default function WalletPage() {
                   <div>
                     <p className="text-sm text-muted-foreground">Total Spent</p>
                     <p className="mt-1 text-2xl font-bold text-card-foreground">
-                      ${totalSpent.toLocaleString()}
+                      ₹{totalSpent.toLocaleString()}
                     </p>
                   </div>
                   <div className="rounded-xl bg-primary/10 p-3">
@@ -199,7 +199,7 @@ export default function WalletPage() {
                   <div>
                     <p className="text-sm text-muted-foreground">In Escrow</p>
                     <p className="mt-1 text-2xl font-bold text-warning">
-                      ${transactions
+                      ₹{transactions
                         .filter((t) => t.type === "escrow_deposit")
                         .reduce((sum, t) => sum + t.amount, 0) -
                         transactions
@@ -219,7 +219,7 @@ export default function WalletPage() {
                   <div>
                     <p className="text-sm text-muted-foreground">Released</p>
                     <p className="mt-1 text-2xl font-bold text-success">
-                      ${transactions
+                      ₹{transactions
                         .filter((t) => t.type === "milestone_release")
                         .reduce((sum, t) => sum + t.amount, 0)
                         .toLocaleString()}
@@ -269,7 +269,7 @@ export default function WalletPage() {
                       className={`font-semibold ${isPositive(txn.type) ? "text-success" : "text-card-foreground"
                         }`}
                     >
-                      {isPositive(txn.type) ? "+" : "-"}${txn.amount.toLocaleString()}
+                      {isPositive(txn.type) ? "+" : "-"}₹{txn.amount.toLocaleString()}
                     </p>
                     <p className="text-xs text-muted-foreground">
                       {new Date(txn.createdAt).toLocaleDateString()}
@@ -291,7 +291,7 @@ export default function WalletPage() {
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="amount">Amount ($)</Label>
+                <Label htmlFor="amount">Amount (₹)</Label>
                 <Input
                   id="amount"
                   type="number"
@@ -339,7 +339,7 @@ export default function WalletPage() {
                   onClick={handleAddFunds}
                   disabled={!amount || Number.parseFloat(amount) <= 0}
                 >
-                  Add ${amount || 0}
+                  Add ₹{amount || 0}
                 </Button>
               </div>
             </CardContent>
@@ -359,13 +359,13 @@ export default function WalletPage() {
                 <p className="text-muted-foreground">
                   Available balance:{" "}
                   <span className="font-semibold text-card-foreground">
-                    ${user.walletBalance?.toLocaleString() || 0}
+                    ₹{user.walletBalance?.toLocaleString() || 0}
                   </span>
                 </p>
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="withdrawAmount">Amount ($)</Label>
+                <Label htmlFor="withdrawAmount">Amount (₹)</Label>
                 <Input
                   id="withdrawAmount"
                   type="number"
@@ -409,7 +409,7 @@ export default function WalletPage() {
                     Number.parseFloat(amount) > user.walletBalance
                   }
                 >
-                  Withdraw ${amount || 0}
+                  Withdraw ₹{amount || 0}
                 </Button>
               </div>
             </CardContent>
