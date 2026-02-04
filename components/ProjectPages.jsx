@@ -953,9 +953,14 @@ export function ProjectDetailPage() {
 
               {/* Freelancer Actions */}
               {isAssignedFreelancer &&
-                milestone.status === "pending" &&
-                project.escrowAmount > 0 && (
+                milestone.status === "pending" && (
                   <div className="mt-4">
+                    {project.escrowAmount === 0 && (
+                      <div className="mb-3 flex items-center gap-2 rounded-md bg-warning/10 p-2 text-[10px] text-warning">
+                        <AlertCircle className="h-3 w-3" />
+                        <span>Note: Escrow deposit is still pending from client.</span>
+                      </div>
+                    )}
                     {selectedMilestone === milestone._id ? (
                       <div className="space-y-4">
                         <div className="grid gap-3 sm:grid-cols-2">
