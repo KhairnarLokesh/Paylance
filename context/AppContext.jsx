@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useContext, useState, useEffect, useCallback } from "react";
+import { toast } from 'sonner';
 
 const AppContext = createContext(null);
 
@@ -346,7 +347,15 @@ export function AppProvider({ children }) {
 
   const updateUser = async (updatedFields) => {
     try {
+      // Basic size check for base64 images
+      const fieldsStr = JSON.stringify(updatedFields);
+      if (fieldsStr.length > 4000000) { // Approx 4MB
+        toast.error("File size too large. Please use a smaller image.");
+        return;
+      }
+
       // Optimistic update
+      const oldUser = { ...user };
       const updatedUser = { ...user, ...updatedFields };
       setUser(updatedUser);
       localStorage.setItem("paylance_user", JSON.stringify(updatedUser));
@@ -362,18 +371,22 @@ export function AppProvider({ children }) {
         if (!res.ok) {
           const errorData = await res.json();
           console.error("Failed to update user on server:", errorData.error);
-          // Rollback if necessary (optional, but good practice)
-          // For now, we'll just log it.
+          toast.error(`Update failed: ${errorData.error || 'Server error'}`);
+          // Rollback
+          setUser(oldUser);
+          localStorage.setItem("paylance_user", JSON.stringify(oldUser));
         } else {
           const serverUpdatedUser = await res.json();
           // Sync with server data to ensure consistency (e.g., ID fields)
           const sanitized = { ...serverUpdatedUser, id: serverUpdatedUser._id || serverUpdatedUser.id, _id: serverUpdatedUser._id || serverUpdatedUser.id };
           setUser(sanitized);
           localStorage.setItem("paylance_user", JSON.stringify(sanitized));
+          toast.success("Profile updated successfully");
         }
       }
     } catch (error) {
       console.error("Error in updateUser:", error);
+      toast.error("An unexpected error occurred");
     }
   };
 

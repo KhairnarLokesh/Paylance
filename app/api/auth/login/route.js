@@ -17,15 +17,9 @@ export async function POST(req) {
             return Response.json({ success: false, error: 'Invalid credentials' }, { status: 401 });
         }
 
-        const userResponse = {
-            _id: user._id,
-            id: user._id,
-            name: user.name,
-            email: user.email,
-            role: user.role,
-            skills: user.skills,
-            walletBalance: user.walletBalance,
-        };
+        const { password: _, ...userResponse } = user._doc || user;
+        userResponse.id = user._id;
+        userResponse._id = user._id;
 
         return Response.json({ success: true, user: userResponse });
     } catch (error) {

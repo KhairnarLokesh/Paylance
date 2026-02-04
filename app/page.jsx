@@ -16,6 +16,7 @@ import {
 import MessagesPage from "@/components/MessagesPage";
 import WalletPage from "@/components/WalletPage";
 import ProfilePage from "@/components/ProfilePage";
+import { Toaster } from 'sonner';
 
 function AppContent() {
   const { currentView, user } = useApp();
@@ -63,6 +64,7 @@ export default function Home() {
   return (
     <AppProvider>
       <AppContent />
+      <Toaster position="top-center" richColors />
     </AppProvider>
   );
 }
