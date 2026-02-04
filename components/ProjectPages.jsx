@@ -32,6 +32,8 @@ import {
   MessageSquare,
   AlertCircle,
   Loader2,
+  Github,
+  Globe,
 } from "lucide-react";
 
 const categories = [
@@ -643,7 +645,11 @@ export function ProjectDetailPage() {
     demoUrl: "",
     coverLetter: "",
   });
-  const [milestoneSubmission, setMilestoneSubmission] = useState("");
+  const [milestoneSubmission, setMilestoneSubmission] = useState({
+    githubUrl: "",
+    liveUrl: "",
+    notes: "",
+  });
   const [selectedMilestone, setSelectedMilestone] = useState(null);
   const [processingMilestone, setProcessingMilestone] = useState(null);
 
@@ -693,8 +699,11 @@ export function ProjectDetailPage() {
   };
 
   const handleSubmitMilestone = (milestoneId) => {
-    submitMilestone(project._id, milestoneId, milestoneSubmission);
-    setMilestoneSubmission("");
+    submitMilestone(project._id, milestoneId, {
+      ...milestoneSubmission,
+      submittedAt: new Date(),
+    });
+    setMilestoneSubmission({ githubUrl: "", liveUrl: "", notes: "" });
     setSelectedMilestone(null);
   };
 
@@ -884,9 +893,47 @@ export function ProjectDetailPage() {
                       </span>
                     </div>
                     {milestone.submission && (
-                      <p className="mt-2 text-sm text-muted-foreground">
-                        <span className="font-medium">Submission:</span> {milestone.submission}
-                      </p>
+                      <div className="mt-3 space-y-2 border-l-2 border-primary/20 pl-3">
+                        <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Submission</p>
+                        {typeof milestone.submission === 'string' ? (
+                          <p className="text-sm text-foreground">{milestone.submission}</p>
+                        ) : (
+                          <>
+                            {milestone.submission.notes && (
+                              <p className="text-sm text-foreground">{milestone.submission.notes}</p>
+                            )}
+                            <div className="flex flex-wrap gap-3">
+                              {milestone.submission.githubUrl && (
+                                <a
+                                  href={milestone.submission.githubUrl}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="flex items-center gap-1.5 text-xs font-medium text-primary hover:underline"
+                                >
+                                  <Github className="h-3.5 w-3.5" />
+                                  GitHub Repo
+                                </a>
+                              )}
+                              {milestone.submission.liveUrl && (
+                                <a
+                                  href={milestone.submission.liveUrl}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="flex items-center gap-1.5 text-xs font-medium text-primary hover:underline"
+                                >
+                                  <Globe className="h-3.5 w-3.5" />
+                                  Live Demo
+                                </a>
+                              )}
+                            </div>
+                            {milestone.submission.submittedAt && (
+                              <p className="text-[10px] text-muted-foreground">
+                                Submitted on {new Date(milestone.submission.submittedAt).toLocaleDateString()}
+                              </p>
+                            )}
+                          </>
+                        )}
+                      </div>
                     )}
                   </div>
                 </div>
@@ -910,24 +957,55 @@ export function ProjectDetailPage() {
                 project.escrowAmount > 0 && (
                   <div className="mt-4">
                     {selectedMilestone === milestone._id ? (
-                      <div className="space-y-3">
-                        <Textarea
-                          placeholder="Describe your work submission..."
-                          value={milestoneSubmission}
-                          onChange={(e) => setMilestoneSubmission(e.target.value)}
-                          rows={3}
-                        />
-                        <div className="flex gap-2">
+                      <div className="space-y-4">
+                        <div className="grid gap-3 sm:grid-cols-2">
+                          <div className="space-y-1.5">
+                            <Label htmlFor="githubUrl" className="text-xs">GitHub Repository URL</Label>
+                            <Input
+                              id="githubUrl"
+                              placeholder="https://github.com/..."
+                              value={milestoneSubmission.githubUrl}
+                              onChange={(e) => setMilestoneSubmission({ ...milestoneSubmission, githubUrl: e.target.value })}
+                              className="h-9 text-sm"
+                            />
+                          </div>
+                          <div className="space-y-1.5">
+                            <Label htmlFor="liveUrl" className="text-xs">Live Hosted Link</Label>
+                            <Input
+                              id="liveUrl"
+                              placeholder="https://yourapp.com/..."
+                              value={milestoneSubmission.liveUrl}
+                              onChange={(e) => setMilestoneSubmission({ ...milestoneSubmission, liveUrl: e.target.value })}
+                              className="h-9 text-sm"
+                            />
+                          </div>
+                        </div>
+                        <div className="space-y-1.5">
+                          <Label htmlFor="notes" className="text-xs">Submission Notes</Label>
+                          <Textarea
+                            id="notes"
+                            placeholder="Describe what you've completed in this milestone..."
+                            value={milestoneSubmission.notes}
+                            onChange={(e) => setMilestoneSubmission({ ...milestoneSubmission, notes: e.target.value })}
+                            rows={3}
+                            className="text-sm"
+                          />
+                        </div>
+                        <div className="flex gap-2 pt-1">
                           <Button
                             size="sm"
                             onClick={() => handleSubmitMilestone(milestone._id)}
+                            disabled={!milestoneSubmission.githubUrl && !milestoneSubmission.liveUrl && !milestoneSubmission.notes}
                           >
-                            Submit
+                            Submit Milestone
                           </Button>
                           <Button
                             size="sm"
                             variant="outline"
-                            onClick={() => setSelectedMilestone(null)}
+                            onClick={() => {
+                              setSelectedMilestone(null);
+                              setMilestoneSubmission({ githubUrl: "", liveUrl: "", notes: "" });
+                            }}
                           >
                             Cancel
                           </Button>
@@ -968,81 +1046,85 @@ export function ProjectDetailPage() {
       </Card>
 
       {/* Applications (for client) */}
-      {isClient && project.status === "open" && project.applications.length > 0 && (
-        <Card className="border-border">
-          <CardHeader>
-            <CardTitle className="text-lg">
-              Applications ({project.applications.length})
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            {project.applications.map((app) => (
-              <ApplicationCard
-                key={app.freelancerId}
-                app={app}
-                project={project}
-              />
-            ))}
-          </CardContent>
-        </Card>
-      )}
-
-      {/* Apply Modal */}
-      {showApplyModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-foreground/20 backdrop-blur-sm p-4">
-          <Card className="w-full max-w-lg border-border">
+      {
+        isClient && project.status === "open" && project.applications.length > 0 && (
+          <Card className="border-border">
             <CardHeader>
-              <CardTitle>Apply for {project.title}</CardTitle>
+              <CardTitle className="text-lg">
+                Applications ({project.applications.length})
+              </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="demoUrl">Demo Project URL (Required)</Label>
-                <Input
-                  id="demoUrl"
-                  placeholder="https://github.com/yourproject or portfolio link"
-                  value={applicationData.demoUrl}
-                  onChange={(e) =>
-                    setApplicationData({ ...applicationData, demoUrl: e.target.value })
-                  }
-                  required
+              {project.applications.map((app) => (
+                <ApplicationCard
+                  key={app.freelancerId}
+                  app={app}
+                  project={project}
                 />
-                <p className="text-xs text-muted-foreground">
-                  Submit a relevant demo project for the client to review
-                </p>
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="coverLetter">Cover Letter</Label>
-                <Textarea
-                  id="coverLetter"
-                  placeholder="Explain why you're the best fit for this project..."
-                  rows={4}
-                  value={applicationData.coverLetter}
-                  onChange={(e) =>
-                    setApplicationData({ ...applicationData, coverLetter: e.target.value })
-                  }
-                />
-              </div>
-              <div className="flex gap-3">
-                <Button
-                  variant="outline"
-                  className="flex-1 bg-transparent"
-                  onClick={() => setShowApplyModal(false)}
-                >
-                  Cancel
-                </Button>
-                <Button
-                  className="flex-1"
-                  onClick={handleApply}
-                  disabled={!applicationData.demoUrl}
-                >
-                  Submit Application
-                </Button>
-              </div>
+              ))}
             </CardContent>
           </Card>
-        </div>
-      )}
-    </div>
+        )
+      }
+
+      {/* Apply Modal */}
+      {
+        showApplyModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-foreground/20 backdrop-blur-sm p-4">
+            <Card className="w-full max-w-lg border-border">
+              <CardHeader>
+                <CardTitle>Apply for {project.title}</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="demoUrl">Demo Project URL (Required)</Label>
+                  <Input
+                    id="demoUrl"
+                    placeholder="https://github.com/yourproject or portfolio link"
+                    value={applicationData.demoUrl}
+                    onChange={(e) =>
+                      setApplicationData({ ...applicationData, demoUrl: e.target.value })
+                    }
+                    required
+                  />
+                  <p className="text-xs text-muted-foreground">
+                    Submit a relevant demo project for the client to review
+                  </p>
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="coverLetter">Cover Letter</Label>
+                  <Textarea
+                    id="coverLetter"
+                    placeholder="Explain why you're the best fit for this project..."
+                    rows={4}
+                    value={applicationData.coverLetter}
+                    onChange={(e) =>
+                      setApplicationData({ ...applicationData, coverLetter: e.target.value })
+                    }
+                  />
+                </div>
+                <div className="flex gap-3">
+                  <Button
+                    variant="outline"
+                    className="flex-1 bg-transparent"
+                    onClick={() => setShowApplyModal(false)}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    className="flex-1"
+                    onClick={handleApply}
+                    disabled={!applicationData.demoUrl}
+                  >
+                    Submit Application
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        )
+      }
+    </div >
   );
 }
 

@@ -5,7 +5,13 @@ const MilestoneSchema = new mongoose.Schema({
     amount: { type: Number, required: true },
     status: { type: String, enum: ['pending', 'submitted', 'approved'], default: 'pending' },
     deadline: { type: String },
-    submission: { type: String, default: null },
+    submission: {
+        githubUrl: { type: String, default: null },
+        liveUrl: { type: String, default: null },
+        fileUrl: { type: String, default: null },
+        notes: { type: String, default: null },
+        submittedAt: { type: Date, default: null }
+    },
 });
 
 const ApplicationSchema = new mongoose.Schema({
