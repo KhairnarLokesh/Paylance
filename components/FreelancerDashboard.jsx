@@ -71,7 +71,7 @@ export default function FreelancerDashboard() {
     },
     {
       title: "Total Earnings",
-      value: `$${totalEarnings.toLocaleString()}`,
+      value: `₹${totalEarnings.toLocaleString()}`,
       icon: DollarSign,
       color: "text-accent",
       bg: "bg-accent/10",
@@ -240,7 +240,7 @@ export default function FreelancerDashboard() {
             <div>
               <p className="text-sm text-muted-foreground">Available Balance</p>
               <p className="mt-1 text-3xl font-bold text-card-foreground">
-                ${user.walletBalance?.toLocaleString() || 0}
+                ₹{user.walletBalance?.toLocaleString() || 0}
               </p>
             </div>
             <Button variant="outline" onClick={() => setCurrentView("wallet")}>

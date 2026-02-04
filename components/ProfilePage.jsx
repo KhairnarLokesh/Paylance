@@ -38,15 +38,57 @@ export default function ProfilePage() {
     const [isEditingName, setIsEditingName] = useState(false);
     const [isAddingSkill, setIsAddingSkill] = useState(false);
     const [isEditingRole, setIsEditingRole] = useState(false);
+    const [isEditingLocation, setIsEditingLocation] = useState(false);
+    const [isEditingUsername, setIsEditingUsername] = useState(false);
+    const [isEditingEducation, setIsEditingEducation] = useState(false);
+    const [isEditingPhone, setIsEditingPhone] = useState(false);
 
     // Form values
     const [tempName, setTempName] = useState(user?.name || "");
     const [tempSkill, setTempSkill] = useState("");
     const [tempRole, setTempRole] = useState(user?.role_title || (user?.role === 'freelancer' ? 'Professional Freelancer' : 'Project Client'));
+    const [tempLocation, setTempLocation] = useState(user?.location || "Nashik, Maharashtra, India");
+    const [tempUsername, setTempUsername] = useState(user?.username || "@lkhairnar580_5037");
+    const [tempEducation, setTempEducation] = useState(user?.education || "Bachelor Of Engineering (b.e) at Pune Vidhyarthi Griha's College of Engineering and ShriKrushna S Dhamankar Institute of Management Nashik");
+    const [tempPhone, setTempPhone] = useState(user?.phone || "917666860132");
+    const [tempSecondaryPhone, setTempSecondaryPhone] = useState(user?.secondaryPhone || "7666860132");
+
+    // Update temp values when user data changes (e.g., after fetch)
+    React.useEffect(() => {
+        if (user) {
+            setTempName(user.name || "");
+            setTempRole(user.role_title || (user.role === 'freelancer' ? 'Professional Freelancer' : 'Project Client'));
+            setTempLocation(user.location || "Nashik, Maharashtra, India");
+            setTempUsername(user.username || "@lkhairnar580_5037");
+            setTempEducation(user.education || "Bachelor Of Engineering (b.e) at Pune Vidhyarthi Griha's College of Engineering and ShriKrushna S Dhamankar Institute of Management Nashik");
+            setTempPhone(user.phone || "917666860132");
+            setTempSecondaryPhone(user.secondaryPhone || "7666860132");
+        }
+    }, [user]);
 
     const handleSaveName = () => {
         updateUser({ name: tempName });
         setIsEditingName(false);
+    };
+
+    const handleSaveLocation = () => {
+        updateUser({ location: tempLocation });
+        setIsEditingLocation(false);
+    };
+
+    const handleSaveUsername = () => {
+        updateUser({ username: tempUsername });
+        setIsEditingUsername(false);
+    };
+
+    const handleSaveEducation = () => {
+        updateUser({ education: tempEducation });
+        setIsEditingEducation(false);
+    };
+
+    const handleSavePhone = () => {
+        updateUser({ phone: tempPhone, secondaryPhone: tempSecondaryPhone });
+        setIsEditingPhone(false);
     };
 
     const handleImageUpload = (e) => {
@@ -199,35 +241,107 @@ export default function ProfilePage() {
                                         </>
                                     )}
                                 </div>
-                                <div className="flex items-center gap-2 mt-2 text-slate-500 font-medium">
+                                <div className="flex items-center gap-2 mt-2 text-slate-500 font-medium group">
                                     <MapPin className="h-4 w-4" />
-                                    <span>Nashik, Maharashtra, India</span>
+                                    {isEditingLocation ? (
+                                        <div className="flex items-center gap-2">
+                                            <Input
+                                                value={tempLocation}
+                                                onChange={(e) => setTempLocation(e.target.value)}
+                                                className="h-8 w-60"
+                                                autoFocus
+                                            />
+                                            <Check className="h-4 w-4 text-green-600 cursor-pointer" onClick={handleSaveLocation} />
+                                            <X className="h-4 w-4 text-red-600 cursor-pointer" onClick={() => setIsEditingLocation(false)} />
+                                        </div>
+                                    ) : (
+                                        <>
+                                            <span>{user?.location || "Nashik, Maharashtra, India"}</span>
+                                            <Pencil className="h-3 w-3 text-slate-400 opacity-0 group-hover:opacity-100 cursor-pointer" onClick={() => setIsEditingLocation(true)} />
+                                        </>
+                                    )}
                                 </div>
                             </div>
 
-                            <div className="flex items-center gap-3 text-slate-600 font-medium">
-                                <span>@lkhairnar580_5037</span>
+                            <div className="flex items-center gap-3 text-slate-600 font-medium group">
+                                {isEditingUsername ? (
+                                    <div className="flex items-center gap-2">
+                                        <Input
+                                            value={tempUsername}
+                                            onChange={(e) => setTempUsername(e.target.value)}
+                                            className="h-8 w-40"
+                                            autoFocus
+                                        />
+                                        <Check className="h-4 w-4 text-green-600 cursor-pointer" onClick={handleSaveUsername} />
+                                        <X className="h-4 w-4 text-red-600 cursor-pointer" onClick={() => setIsEditingUsername(false)} />
+                                    </div>
+                                ) : (
+                                    <>
+                                        <span>{user?.username || "@lkhairnar580_5037"}</span>
+                                        <Pencil className="h-3 w-3 text-slate-400 opacity-0 group-hover:opacity-100 cursor-pointer" onClick={() => setIsEditingUsername(true)} />
+                                    </>
+                                )}
                             </div>
 
-                            <p className="text-slate-600 leading-relaxed font-medium mt-4">
-                                Bachelor Of Engineering (b.e) at <br />
-                                <span className="text-slate-400">Pune Vidhyarthi Griha's College of Engineering and ShriKrushna S Dhamankar Institute of Management Nashik</span>
-                            </p>
+                            <div className="text-slate-600 leading-relaxed font-medium mt-4 group">
+                                {isEditingEducation ? (
+                                    <div className="flex flex-col gap-2">
+                                        <textarea
+                                            value={tempEducation}
+                                            onChange={(e) => setTempEducation(e.target.value)}
+                                            className="w-full p-2 border rounded-xl text-sm"
+                                            rows={3}
+                                            autoFocus
+                                        />
+                                        <div className="flex gap-2">
+                                            <Button size="sm" onClick={handleSaveEducation}>Save</Button>
+                                            <Button size="sm" variant="ghost" onClick={() => setIsEditingEducation(false)}>Cancel</Button>
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <div className="relative">
+                                        <p>
+                                            {user?.education || "Bachelor Of Engineering (b.e) at Pune Vidhyarthi Griha's College of Engineering and ShriKrushna S Dhamankar Institute of Management Nashik"}
+                                        </p>
+                                        <Pencil className="h-3 w-3 text-slate-400 absolute -top-1 -right-6 opacity-0 group-hover:opacity-100 cursor-pointer" onClick={() => setIsEditingEducation(true)} />
+                                    </div>
+                                )}
+                            </div>
 
                             <div className="space-y-3 pt-6">
                                 <div className="flex items-center gap-3 text-blue-600 font-bold">
                                     <Mail className="h-4 w-4" />
                                     <span className="hover:underline cursor-pointer">{user?.email || "lkhairnar580@gmail.com"}</span>
                                 </div>
-                                <div className="flex flex-wrap items-center gap-x-10 gap-y-3 text-slate-700 font-bold">
-                                    <div className="flex items-center gap-3">
-                                        <Phone className="h-4 w-4 text-slate-400" />
-                                        <span>917666860132</span>
-                                    </div>
-                                    <div className="flex items-center gap-3">
-                                        <Globe className="h-4 w-4 text-slate-400" />
-                                        <span>7666860132</span>
-                                    </div>
+                                <div className="flex flex-wrap items-center gap-x-10 gap-y-3 text-slate-700 font-bold group">
+                                    {isEditingPhone ? (
+                                        <div className="flex flex-col gap-2">
+                                            <div className="flex items-center gap-2">
+                                                <Phone className="h-4 w-4 text-slate-400" />
+                                                <Input value={tempPhone} onChange={(e) => setTempPhone(e.target.value)} className="h-8 w-40" placeholder="Primary Phone" />
+                                            </div>
+                                            <div className="flex items-center gap-2">
+                                                <Globe className="h-4 w-4 text-slate-400" />
+                                                <Input value={tempSecondaryPhone} onChange={(e) => setTempSecondaryPhone(e.target.value)} className="h-8 w-40" placeholder="Secondary Phone" />
+                                            </div>
+                                            <div className="flex gap-2">
+                                                <Button size="sm" onClick={handleSavePhone}>Save</Button>
+                                                <Button size="sm" variant="ghost" onClick={() => setIsEditingPhone(false)}>Cancel</Button>
+                                            </div>
+                                        </div>
+                                    ) : (
+                                        <>
+                                            <div className="flex items-center gap-3">
+                                                <Phone className="h-4 w-4 text-slate-400" />
+                                                <span>{user?.phone || "917666860132"}</span>
+                                            </div>
+                                            <div className="flex items-center gap-3">
+                                                <Globe className="h-4 w-4 text-slate-400" />
+                                                <span>{user?.secondaryPhone || "7666860132"}</span>
+                                            </div>
+                                            <Pencil className="h-3 w-3 text-slate-400 opacity-0 group-hover:opacity-100 cursor-pointer" onClick={() => setIsEditingPhone(true)} />
+                                        </>
+                                    )}
                                 </div>
                             </div>
                         </div>

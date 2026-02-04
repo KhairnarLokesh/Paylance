@@ -308,7 +308,7 @@ export function CreateProjectPage() {
             <div className="flex items-center justify-between rounded-lg bg-muted p-4">
               <span className="font-medium text-foreground">Total Budget</span>
               <span className="text-xl font-bold text-primary">
-                ${totalBudget.toLocaleString()}
+                ₹{totalBudget.toLocaleString()}
               </span>
             </div>
           </CardContent>
@@ -769,7 +769,7 @@ export function ProjectDetailPage() {
             </div>
             <div className="shrink-0 text-right">
               <p className="text-3xl font-bold text-primary">
-                ${project.budget.toLocaleString()}
+                ₹{project.budget.toLocaleString()}
               </p>
               <p className="text-sm text-muted-foreground">Total Budget</p>
             </div>
@@ -841,7 +841,7 @@ export function ProjectDetailPage() {
               </div>
               <Button onClick={() => depositEscrow(project._id, project.budget)}>
                 <DollarSign className="mr-2 h-4 w-4" />
-                Deposit ${project.budget}
+                Deposit ₹{project.budget}
               </Button>
             </div>
           </CardContent>
@@ -1041,7 +1041,7 @@ export function ProjectDetailPage() {
                     ) : (
                       <CheckCircle className="mr-2 h-4 w-4" />
                     )}
-                    Approve & Release ${milestone.amount}
+                    Approve & Release ₹{milestone.amount}
                   </Button>
                 </div>
               )}

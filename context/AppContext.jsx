@@ -344,10 +344,37 @@ export function AppProvider({ children }) {
     return await res.json();
   };
 
-  const updateUser = (updatedFields) => {
-    const updatedUser = { ...user, ...updatedFields };
-    setUser(updatedUser);
-    localStorage.setItem("paylance_user", JSON.stringify(updatedUser));
+  const updateUser = async (updatedFields) => {
+    try {
+      // Optimistic update
+      const updatedUser = { ...user, ...updatedFields };
+      setUser(updatedUser);
+      localStorage.setItem("paylance_user", JSON.stringify(updatedUser));
+
+      if (user?._id || user?.id) {
+        const userId = user._id || user.id;
+        const res = await fetch(`/api/users/${userId}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(updatedFields)
+        });
+
+        if (!res.ok) {
+          const errorData = await res.json();
+          console.error("Failed to update user on server:", errorData.error);
+          // Rollback if necessary (optional, but good practice)
+          // For now, we'll just log it.
+        } else {
+          const serverUpdatedUser = await res.json();
+          // Sync with server data to ensure consistency (e.g., ID fields)
+          const sanitized = { ...serverUpdatedUser, id: serverUpdatedUser._id || serverUpdatedUser.id, _id: serverUpdatedUser._id || serverUpdatedUser.id };
+          setUser(sanitized);
+          localStorage.setItem("paylance_user", JSON.stringify(sanitized));
+        }
+      }
+    } catch (error) {
+      console.error("Error in updateUser:", error);
+    }
   };
 
   return (

@@ -60,7 +60,7 @@ export default function ClientDashboard() {
     },
     {
       title: "Total Spent",
-      value: `$${totalSpent.toLocaleString()}`,
+      value: `₹${totalSpent.toLocaleString()}`,
       icon: DollarSign,
       color: "text-success",
       bg: "bg-success/10",
