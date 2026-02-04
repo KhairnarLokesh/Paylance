@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useApp } from "@/context/AppContext";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -19,10 +19,14 @@ import {
 } from "lucide-react";
 
 export default function WalletPage() {
-  const { user, transactions, addFunds, withdrawFunds } = useApp();
+  const { user, transactions, addFunds, withdrawFunds, refreshData } = useApp();
   const [showAddFunds, setShowAddFunds] = useState(false);
   const [showWithdraw, setShowWithdraw] = useState(false);
   const [amount, setAmount] = useState("");
+
+  useEffect(() => {
+    refreshData();
+  }, [refreshData]);
 
   const handleAddFunds = () => {
     if (!amount || Number.parseFloat(amount) <= 0) return;

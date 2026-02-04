@@ -24,21 +24,30 @@ export function AppProvider({ children }) {
   // Fetch all user data
   const fetchUserData = useCallback(async (userId) => {
     try {
-      const [projRes, notifRes, transRes] = await Promise.all([
+      const [projRes, notifRes, transRes, userRes] = await Promise.all([
         fetch('/api/projects'),
         fetch(`/api/notifications?userId=${userId}`),
-        fetch(`/api/wallet?userId=${userId}`)
+        fetch(`/api/wallet?userId=${userId}`),
+        fetch(`/api/users/${userId}`)
       ]);
 
-      const [projectsData, notificationsData, transactionsData] = await Promise.all([
+      const [projectsData, notificationsData, transactionsData, userData] = await Promise.all([
         projRes.json(),
         notifRes.json(),
-        transRes.json()
+        transRes.json(),
+        userRes.json()
       ]);
 
       setProjects(projectsData);
       setNotifications(notificationsData);
       setTransactions(transactionsData);
+
+      if (userData && !userData.error) {
+        // Correcting ID consistency
+        const sanitizedUser = { ...userData, id: userData._id || userData.id, _id: userData._id || userData.id };
+        setUser(sanitizedUser);
+        localStorage.setItem("paylance_user", JSON.stringify(sanitizedUser));
+      }
 
       // Update selected project if it exists in the new data
       setSelectedProject(prev => {
@@ -372,6 +381,7 @@ export function AppProvider({ children }) {
         getProjectMessages,
         getUserById,
         updateUser,
+        refreshData: () => fetchUserData(user?.id || user?._id),
       }}
     >
       {children}
