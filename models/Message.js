@@ -1,5 +1,4 @@
 import mongoose from 'mongoose';
-
 const MessageSchema = new mongoose.Schema({
     projectId: { type: mongoose.Schema.Types.ObjectId, ref: 'Project', required: true },
     senderId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
@@ -8,5 +7,4 @@ const MessageSchema = new mongoose.Schema({
     timestamp: { type: Date, default: Date.now },
     read: { type: Boolean, default: false },
 });
-
 export default mongoose.models.Message || mongoose.model('Message', MessageSchema);

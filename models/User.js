@@ -1,5 +1,4 @@
 import mongoose from 'mongoose';
-
 const UserSchema = new mongoose.Schema({
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
@@ -21,5 +20,4 @@ const UserSchema = new mongoose.Schema({
     completedProjects: { type: Number, default: 0 },
     createdAt: { type: Date, default: Date.now },
 });
-
 export default mongoose.models.User || mongoose.model('User', UserSchema);
