@@ -1,13 +1,10 @@
 import { sendEmail } from '@/lib/emailService';
-
 export async function POST(req) {
     try {
         const { toEmail } = await req.json();
-
         if (!toEmail) {
             return Response.json({ error: 'Email address required' }, { status: 400 });
         }
-
         // Test email
         const testHtml = `
             <!DOCTYPE html>
@@ -39,7 +36,6 @@ export async function POST(req) {
             </body>
             </html>
         `;
-
         const testText = `
             Email Configuration Test - Paylance
             
@@ -47,28 +43,22 @@ export async function POST(req) {
             
             Test completed at: ${new Date().toLocaleString()}
         `;
-
-        const result = await sendEmail(
-            toEmail,
-            '✅ Paylance Email Test - Configuration Successful',
-            testHtml,
-            testText
-        );
-
+        const result = await sendEmail(toEmail, '✅ Paylance Email Test - Configuration Successful', testHtml, testText);
         if (result.success) {
             return Response.json({
                 success: true,
                 message: 'Test email sent successfully!',
                 messageId: result.messageId
             });
-        } else {
+        }
+        else {
             return Response.json({
                 success: false,
                 error: 'Failed to send test email'
             }, { status: 500 });
         }
-
-    } catch (error) {
+    }
+    catch (error) {
         console.error('Test email error:', error);
         return Response.json({
             success: false,
