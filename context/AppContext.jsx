@@ -32,7 +32,10 @@ export function AppProvider({ children }) {
                 transRes.json(),
                 userRes.json()
             ]);
-            setProjects(projectsData);
+
+            // Handle both array (legacy) and object (paginated) responses
+            const projectsArray = Array.isArray(projectsData) ? projectsData : (projectsData.projects || []);
+            setProjects(projectsArray);
             setNotifications(notificationsData);
             setTransactions(transactionsData);
             if (userData && !userData.error) {
@@ -368,37 +371,37 @@ export function AppProvider({ children }) {
         }
     };
     return (<AppContext.Provider value={{
-            user,
-            projects,
-            messages,
-            notifications,
-            transactions,
-            currentView,
-            selectedProject,
-            selectedChat,
-            loading,
-            setCurrentView,
-            setSelectedProject,
-            setSelectedChat,
-            login,
-            register,
-            logout,
-            createProject,
-            applyToProject,
-            reviewApplication,
-            depositEscrow,
-            submitMilestone,
-            approveMilestone,
-            sendMessage,
-            markNotificationRead,
-            addFunds,
-            withdrawFunds,
-            getProjectMessages,
-            getUserById,
-            updateUser,
-            refreshData: () => fetchUserData(user?.id || user?._id),
-        }}>
-      {children}
+        user,
+        projects,
+        messages,
+        notifications,
+        transactions,
+        currentView,
+        selectedProject,
+        selectedChat,
+        loading,
+        setCurrentView,
+        setSelectedProject,
+        setSelectedChat,
+        login,
+        register,
+        logout,
+        createProject,
+        applyToProject,
+        reviewApplication,
+        depositEscrow,
+        submitMilestone,
+        approveMilestone,
+        sendMessage,
+        markNotificationRead,
+        addFunds,
+        withdrawFunds,
+        getProjectMessages,
+        getUserById,
+        updateUser,
+        refreshData: () => fetchUserData(user?.id || user?._id),
+    }}>
+        {children}
     </AppContext.Provider>);
 }
 export function useApp() {
