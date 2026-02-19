@@ -53,9 +53,13 @@ export function AppProvider({ children }) {
             console.error("Error fetching user data:", error);
         }
     }, []);
-    // Check for saved session
+    // Check for saved session and deep links
     useEffect(() => {
         const savedUser = localStorage.getItem("paylance_user");
+        const urlParams = new URLSearchParams(window.location.search);
+        const viewOverride = urlParams.get('view');
+        const projectIdOverride = urlParams.get('projectId');
+
         if (savedUser) {
             const parsed = JSON.parse(savedUser);
             // Compatibility fix: ensure _id exists if only id exists
@@ -64,8 +68,34 @@ export function AppProvider({ children }) {
             if (parsed._id && !parsed.id)
                 parsed.id = parsed._id;
             setUser(parsed);
+
+            // If we have a view override in URL, use it; otherwise default to dashboard if logged in, or landing
+            if (viewOverride) {
+                setCurrentView(viewOverride);
+                if (projectIdOverride) {
+                    // We'll set the selected project once projects are loaded or in the fetchUserData callback
+                    // But we can set the ID now
+                    setSelectedProject({ _id: projectIdOverride, loading: true });
+                }
+            } else {
+                setCurrentView("landing");
+            }
+
+            fetchUserData(parsed._id || parsed.id).then(() => {
+                // After fetching, if we had a project override, find it in the loaded projects
+                if (projectIdOverride) {
+                    // Logic to find project is already in fetchUserData but let's be explicit if needed
+                }
+            });
+        } else if (viewOverride) {
+            // Even if not logged in, if a view is specified, we might want to show login/register then redirect
+            // For now, let's just store the intended view if we want to redirect after login
+            setCurrentView(viewOverride);
+            if (projectIdOverride) {
+                setSelectedProject({ _id: projectIdOverride, loading: true });
+            }
+        } else {
             setCurrentView("landing");
-            fetchUserData(parsed._id || parsed.id);
         }
         setLoading(false);
     }, [fetchUserData]);
@@ -80,7 +110,10 @@ export function AppProvider({ children }) {
             if (data.success) {
                 setUser(data.user);
                 localStorage.setItem("paylance_user", JSON.stringify(data.user));
-                setCurrentView("landing");
+                // Keep current view if it was set via deep link, otherwise go to landing
+                if (currentView === "landing" || currentView === "login") {
+                    setCurrentView("landing");
+                }
                 await fetchUserData(data.user._id || data.user.id);
                 return { success: true };
             }
@@ -101,7 +134,10 @@ export function AppProvider({ children }) {
             if (data.success) {
                 setUser(data.user);
                 localStorage.setItem("paylance_user", JSON.stringify(data.user));
-                setCurrentView("landing");
+                // Keep current view if it was set via deep link, otherwise go to landing
+                if (currentView === "landing" || currentView === "register") {
+                    setCurrentView("landing");
+                }
                 await fetchUserData(data.user._id || data.user.id);
                 return { success: true };
             }
@@ -368,37 +404,37 @@ export function AppProvider({ children }) {
         }
     };
     return (<AppContext.Provider value={{
-            user,
-            projects,
-            messages,
-            notifications,
-            transactions,
-            currentView,
-            selectedProject,
-            selectedChat,
-            loading,
-            setCurrentView,
-            setSelectedProject,
-            setSelectedChat,
-            login,
-            register,
-            logout,
-            createProject,
-            applyToProject,
-            reviewApplication,
-            depositEscrow,
-            submitMilestone,
-            approveMilestone,
-            sendMessage,
-            markNotificationRead,
-            addFunds,
-            withdrawFunds,
-            getProjectMessages,
-            getUserById,
-            updateUser,
-            refreshData: () => fetchUserData(user?.id || user?._id),
-        }}>
-      {children}
+        user,
+        projects,
+        messages,
+        notifications,
+        transactions,
+        currentView,
+        selectedProject,
+        selectedChat,
+        loading,
+        setCurrentView,
+        setSelectedProject,
+        setSelectedChat,
+        login,
+        register,
+        logout,
+        createProject,
+        applyToProject,
+        reviewApplication,
+        depositEscrow,
+        submitMilestone,
+        approveMilestone,
+        sendMessage,
+        markNotificationRead,
+        addFunds,
+        withdrawFunds,
+        getProjectMessages,
+        getUserById,
+        updateUser,
+        refreshData: () => fetchUserData(user?.id || user?._id),
+    }}>
+        {children}
     </AppContext.Provider>);
 }
 export function useApp() {
