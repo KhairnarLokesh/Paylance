@@ -7,6 +7,7 @@ Paylance is an advanced, high-performance collaboration platform designed to sec
 This project is built, maintained, and exclusively owned by:
 
 - **Lokesh Khairnar** - [GitHub Profile](https://github.com/KhairnarLokesh)
+- **Kanhaiya Bagul**  -  [GitHub Profile](https://github.com/KanhaiyaBagul)
 
 ⚠️ **RESTRICTED ACCESS NOTICE**
 This software is Proprietary. Unauthorised use, modification, duplication, or distribution of this code without the explicit written permission of the authors listed above is strictly prohibited.
