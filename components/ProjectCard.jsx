@@ -1,97 +1,91 @@
 "use client";
 import React from "react";
-import { ArrowRight, Layers, Clock, Wallet, ChevronRight, Sparkles, CheckCircle2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { ChevronRight, Layers, Wallet, CheckCircle2 } from "lucide-react";
+
 const ProjectCard = ({ project, onClick }) => {
     const { title, description, tags, budget, milestones, image, status = "Demo" } = project;
-    const getStatusStyles = () => {
+
+    const getStatusStyle = () => {
         const s = status.toLowerCase();
-        if (s === 'open')
-            return "bg-green-100 text-green-700 border-green-200";
-        if (s === 'in progress' || s === 'active')
-            return "bg-blue-100 text-blue-700 border-blue-200";
-        if (s === 'closed' || s === 'completed')
-            return "bg-slate-100 text-slate-700 border-slate-200";
-        if (s === 'pending')
-            return "bg-amber-100 text-amber-700 border-amber-200";
-        if (s === 'rejected')
-            return "bg-red-100 text-red-700 border-red-200";
-        if (s === 'applied')
-            return "bg-indigo-100 text-indigo-700 border-indigo-200";
-        // Demo / Sample
-        return "bg-[#FEF9C3] text-[#854D0E] border-[#FEF08A]";
+        if (s === 'open') return "bg-[#0A1F0F] text-[#4ADE80] border-[#16A34A]/30";
+        if (s === 'in progress' || s === 'active') return "bg-[#0D1A2A] text-[#60A5FA] border-[#3B82F6]/30";
+        if (s === 'completed' || s === 'closed') return "bg-[#1A1A1A] text-[#A1A1AA] border-[#2A2A2A]";
+        if (s === 'pending') return "bg-[#1F1500] text-[#FCD34D] border-[#F59E0B]/30";
+        if (s === 'rejected') return "bg-[#1F0A0A] text-[#F87171] border-[#EF4444]/30";
+        if (s === 'applied') return "bg-[#140A20] text-[#C084FC] border-[#9333EA]/30";
+        return "bg-[#1A1A1A] text-[#A1A1AA] border-[#2A2A2A]";
     };
-    return (<div onClick={onClick} className="group relative bg-white rounded-[24px] border border-slate-100 shadow-sm hover:shadow-xl hover:shadow-blue-500/10 transition-all duration-500 hover:-translate-y-1.5 overflow-hidden flex flex-col h-full mx-auto w-full max-w-[350px] cursor-pointer">
-        {/* Status Badge */}
-        <div className="absolute top-3 right-3 z-10">
-            <div className={`${getStatusStyles()} backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-semibold border shadow-sm flex items-center gap-1 leading-none transition-all duration-300`}>
-                <div className={`w-1.5 h-1.5 rounded-full ${status === "Demo" ? "bg-[#EAB308]" : "bg-current"}`} />
-                {status === "Demo" ? "Demo / Sample" : status}
-            </div>
-        </div>
 
-        {/* Image Section */}
-        <div className="relative h-44 overflow-hidden bg-slate-100">
-            {image ? (<img src={image} alt={title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />) : (<div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-50">
-                <Sparkles className="h-10 w-10 text-blue-200" />
-            </div>)}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-        </div>
+    const dotColor = () => {
+        const s = status.toLowerCase();
+        if (s === 'open') return "bg-[#16A34A]";
+        if (s === 'in progress' || s === 'active') return "bg-[#3B82F6]";
+        if (s === 'pending') return "bg-[#F59E0B]";
+        if (s === 'rejected') return "bg-[#EF4444]";
+        return "bg-[#52525B]";
+    };
 
-        {/* Content Section */}
-        <div className="p-5 flex flex-col flex-grow text-center sm:text-left">
-            <div className="mb-4">
-                <h3 className="text-lg font-bold text-[#2563EB] leading-tight mb-2 line-clamp-1">
-                    {title}
-                </h3>
-                {description && (<p className="text-slate-500 text-xs line-clamp-2 leading-relaxed mb-3">
-                    {description}
-                </p>)}
-            </div>
-
-            {/* Tags */}
-            <div className="flex flex-wrap justify-center sm:justify-start gap-1.5 mb-5">
-                {tags && tags.slice(0, 3).map((tag, idx) => (<span key={idx} className="px-2.5 py-1 bg-[#EFF6FF] text-[#2563EB] text-[9px] font-semibold uppercase tracking-wider rounded-full border border-blue-100">
-                    {tag}
-                </span>))}
-            </div>
-
-            {/* Details Grid */}
-            <div className="grid grid-cols-2 gap-3 mb-6">
-                <div className="flex items-center gap-2">
-                    <div className="p-2 rounded-xl bg-[#FFF7ED] text-[#EA580C] shrink-0">
-                        <Wallet className="h-4 w-4" />
-                    </div>
-                    <div className="text-left">
-                        <p className="text-[9px] text-[#94A3B8] font-semibold uppercase tracking-wider mb-0.5">Budget</p>
-                        <p className="text-sm font-bold text-[#334155] leading-tight">{budget}</p>
-                    </div>
-                </div>
-                <div className="flex items-center gap-2">
-                    <div className="p-2 rounded-xl bg-[#F5F3FF] text-[#7C3AED] shrink-0">
-                        <Layers className="h-4 w-4" />
-                    </div>
-                    <div className="text-left">
-                        <p className="text-[9px] text-[#94A3B8] font-semibold uppercase tracking-wider mb-0.5">Structure</p>
-                        <p className="text-sm font-bold text-[#334155] leading-tight flex items-center gap-1">
-                            {milestones} Ms
-                            <CheckCircle2 className="h-3.5 w-3.5 text-[#22C55E]" />
-                        </p>
-                    </div>
+    return (
+        <div
+            onClick={onClick}
+            className="group relative bg-[#111111] rounded-xl border border-[#2A2A2A] hover:border-[#EA580C]/40 transition-colors duration-200 overflow-hidden flex flex-col h-full w-full max-w-[350px] cursor-pointer"
+        >
+            {/* Status badge */}
+            <div className="absolute top-3 right-3 z-10">
+                <div className={`${getStatusStyle()} px-2.5 py-0.5 rounded-full text-[10px] font-semibold border flex items-center gap-1.5`}>
+                    <span className={`h-1.5 w-1.5 rounded-full ${dotColor()}`} />
+                    {status === "Demo" ? "Demo Sample" : status}
                 </div>
             </div>
 
-            {/* CTA Button */}
-            <div className="mt-auto">
-                <Button onClick={(e) => {
-                    e.stopPropagation();
-                    onClick?.();
-                }} className="w-full bg-[#1D4ED8] hover:bg-[#1E40AF] text-white rounded-[16px] h-11 font-bold text-sm shadow-md shadow-blue-100 transition-all active:scale-[0.98] flex items-center justify-center gap-2 group/btn">
-                    View Details
-                    <ChevronRight className="h-4 w-4 transition-transform group-hover/btn:translate-x-1" />
-                </Button>
+            {/* Image */}
+            <div className="relative h-40 overflow-hidden bg-[#1A1A1A]">
+                {image
+                    ? <img src={image} alt={title} className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-200" />
+                    : <div className="w-full h-full flex items-center justify-center"><Layers className="h-8 w-8 text-[#3F3F46]" /></div>
+                }
+            </div>
+
+            {/* Content */}
+            <div className="p-5 flex flex-col flex-grow">
+                <div className="mb-3">
+                    <h3 className="text-sm font-semibold text-white leading-snug mb-1.5 line-clamp-1">{title}</h3>
+                    {description && <p className="text-[#71717A] text-xs line-clamp-2 leading-relaxed">{description}</p>}
+                </div>
+
+                {/* Tags */}
+                <div className="flex flex-wrap gap-1.5 mb-4">
+                    {tags?.slice(0, 3).map((tag, idx) => (
+                        <span key={idx} className="px-2 py-0.5 bg-[#1A1A1A] text-[#A1A1AA] text-[10px] font-medium rounded border border-[#3F3F46]">{tag}</span>
+                    ))}
+                </div>
+
+                {/* Details */}
+                <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center gap-1.5">
+                        <Wallet className="h-3.5 w-3.5 text-[#52525B]" />
+                        <span className="text-sm font-semibold text-[#16A34A]">{budget}</span>
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                        <Layers className="h-3.5 w-3.5 text-[#52525B]" />
+                        <span className="text-xs text-[#71717A] font-medium flex items-center gap-1">
+                            {milestones} milestones <CheckCircle2 className="h-3 w-3 text-[#16A34A]" />
+                        </span>
+                    </div>
+                </div>
+
+                {/* CTA */}
+                <div className="mt-auto">
+                    <button
+                        onClick={(e) => { e.stopPropagation(); onClick?.(); }}
+                        className="w-full bg-[#EA580C] hover:bg-[#C2410C] text-white rounded-lg h-10 font-semibold text-sm transition-colors flex items-center justify-center gap-2"
+                    >
+                        View Details <ChevronRight className="h-4 w-4" />
+                    </button>
+                </div>
             </div>
         </div>
-    </div>);
+    );
 };
+
 export default ProjectCard;
