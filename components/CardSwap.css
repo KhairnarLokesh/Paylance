@@ -1,0 +1,75 @@
+.card-swap-container {
+  position: relative;
+  perspective: 1200px;
+  overflow: visible;
+}
+
+.card {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border-radius: 20px;
+  border: 1px solid #2A2A2A;
+  background: #111111;
+  box-shadow: 0 40px 80px -20px rgba(0, 0, 0, 0.8);
+
+  transform-style: preserve-3d;
+  will-change: transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+
+  display: flex;
+  flex-direction: column;
+  padding: 42px;
+  color: #FAFAFA;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.card:hover {
+  border-color: #EA580C;
+  transform: translateY(-8px) scale(1.02);
+}
+
+.card h3 {
+  font-size: 1.7rem;
+  font-weight: 700;
+  margin-bottom: 0.8rem;
+  letter-spacing: -0.01em;
+  color: #FFFFFF;
+}
+
+.card p {
+  font-size: 1.1rem;
+  color: #71717A;
+  line-height: 1.6;
+}
+
+.card .icon-box {
+  width: 52px;
+  height: 52px;
+  background: #1A0D07;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24px;
+  border: 1px solid rgba(234, 88, 12, 0.1);
+}
+
+.card .icon-box svg {
+  color: #EA580C;
+  width: 26px;
+  height: 26px;
+}
+
+@media (max-width: 1024px) {
+  .card-swap-container {
+    transform: scale(0.8);
+  }
+}
+
+@media (max-width: 768px) {
+  .card-swap-container {
+    display: none;
+  }
+}

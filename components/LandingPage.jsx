@@ -11,8 +11,9 @@ import {
 } from "@/components/ui/dropdown-menu";
 import {
   ArrowRight, ShieldCheck, Bell, User, LogOut, LayoutDashboard,
-  UserCircle, Plus, Menu, X, Users, Lock, Briefcase,
+  UserCircle, Plus, Menu, X, Users, Lock, Briefcase, Zap, Star, Globe, Shield,
 } from "lucide-react";
+import CardSwap, { Card } from "@/components/CardSwap";
 
 export default function LandingPage() {
   const { setCurrentView, user, logout, notifications } = useApp();
@@ -148,8 +149,8 @@ export default function LandingPage() {
       </header>
 
       {/* ─── Hero ─── */}
-      <section id="hero" className="bg-[#0A0A0A] pt-24 pb-20 px-4">
-        <div className="max-w-7xl mx-auto">
+      <section id="hero" className="bg-[#0A0A0A] pt-24 pb-20 px-4 overflow-hidden">
+        <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-16">
           <div className="max-w-3xl">
             {/* Pill */}
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-[#2A2A2A] bg-[#111111] text-xs font-medium text-[#71717A] mb-8">
@@ -173,16 +174,50 @@ export default function LandingPage() {
                 Browse Projects
               </button>
             </div>
+
+            {/* Stats Row */}
+            <div className="mt-20 flex flex-wrap w-fit border border-[#2A2A2A] bg-[#111111] rounded-xl overflow-hidden divide-x divide-[#2A2A2A]">
+              {stats.map((stat, i) => (
+                <div key={i} className="px-8 py-5">
+                  <p className="text-2xl font-bold text-white tracking-tight">{stat.value}</p>
+                  <p className="text-xs text-[#71717A] font-medium mt-0.5">{stat.label}</p>
+                </div>
+              ))}
+            </div>
           </div>
 
-          {/* Stats Row */}
-          <div className="mt-20 flex flex-wrap w-fit border border-[#2A2A2A] bg-[#111111] rounded-xl overflow-hidden divide-x divide-[#2A2A2A]">
-            {stats.map((stat, i) => (
-              <div key={i} className="px-8 py-5">
-                <p className="text-2xl font-bold text-white tracking-tight">{stat.value}</p>
-                <p className="text-xs text-[#71717A] font-medium mt-0.5">{stat.label}</p>
-              </div>
-            ))}
+          {/* New CardSwap Component */}
+          <div className="hidden lg:block relative mr-12">
+            <CardSwap width={420} height={280} cardDistance={50} verticalDistance={55} delay={4000} skewAmount={4}>
+              <Card>
+                <div className="icon-box">
+                  <Zap />
+                </div>
+                <h3>Instant Payouts</h3>
+                <p>Funds are released to your wallet as soon as milestones are approved by the client.</p>
+              </Card>
+              <Card>
+                <div className="icon-box">
+                  <Shield />
+                </div>
+                <h3>Escrow Protection</h3>
+                <p>Industry-standard security protocol ensuring funds are locked and safe for both parties.</p>
+              </Card>
+              <Card>
+                <div className="icon-box">
+                  <Star />
+                </div>
+                <h3>Verified Experts</h3>
+                <p>Work with the most reliable and skilled talent vetted through our rigorous system.</p>
+              </Card>
+              <Card>
+                <div className="icon-box">
+                  <Globe />
+                </div>
+                <h3>World-Class Support</h3>
+                <p>Dedicated dispute resolution and 24/7 global support to keep your project on track.</p>
+              </Card>
+            </CardSwap>
           </div>
         </div>
       </section>
