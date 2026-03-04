@@ -14,6 +14,7 @@ import {
   UserCircle, Plus, Menu, X, Users, Lock, Briefcase, Zap, Star, Globe, Shield,
 } from "lucide-react";
 import CardSwap, { Card } from "@/components/CardSwap";
+import GlareHover from "@/components/GlareHover";
 
 export default function LandingPage() {
   const { setCurrentView, user, logout, notifications } = useApp();
@@ -235,12 +236,26 @@ export default function LandingPage() {
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
             {trustFeatures.map((item, i) => (
-              <ScrollAnimation key={i} delay={i * 80} className="bg-[#1A1A1A] border border-[#2A2A2A] rounded-xl p-6 hover:border-[#EA580C]/30 transition-colors group">
-                <div className="h-10 w-10 bg-[#1A0D07] rounded-lg flex items-center justify-center mb-4">
-                  <item.icon className="h-5 w-5 text-[#EA580C]" />
-                </div>
-                <h3 className="font-semibold text-white text-sm mb-2">{item.title}</h3>
-                <p className="text-[#71717A] text-sm leading-relaxed">{item.desc}</p>
+              <ScrollAnimation key={i} delay={i * 80}>
+                <GlareHover
+                  width="100%"
+                  height="100%"
+                  background="#1A1A1A"
+                  borderColor="#2A2A2A"
+                  borderRadius="12px"
+                  glareColor="#EA580C"
+                  glareOpacity={0.10}
+                  className="group transition-all duration-300 hover:border-[#EA580C]/30"
+                  style={{ display: 'block' }}
+                >
+                  <div className="p-6">
+                    <div className="h-10 w-10 bg-[#1A0D07] rounded-lg flex items-center justify-center mb-4 border border-[#EA580C]/10">
+                      <item.icon className="h-5 w-5 text-[#EA580C]" />
+                    </div>
+                    <h3 className="font-semibold text-white text-sm mb-2">{item.title}</h3>
+                    <p className="text-[#71717A] text-sm leading-relaxed">{item.desc}</p>
+                  </div>
+                </GlareHover>
               </ScrollAnimation>
             ))}
           </div>
