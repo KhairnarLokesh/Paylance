@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import CardSwap, { Card } from "@/components/CardSwap";
 import GlareHover from "@/components/GlareHover";
+import GlitchText from "@/components/GlitchText";
 
 export default function LandingPage() {
   const { setCurrentView, user, logout, notifications } = useApp();
@@ -160,8 +161,10 @@ export default function LandingPage() {
             </div>
             {/* Headline */}
             <h1 className="text-5xl md:text-6xl lg:text-[72px] font-bold tracking-tight leading-[1.05] text-white mb-6">
-              Find Great Work.<br />
-              Get <span className="text-[#EA580C]">Paid</span> Safely.
+              <GlitchText speed={0.4}>Find Great Work.</GlitchText><br />
+              <GlitchText speed={0.4}>Get</GlitchText>{" "}
+              <GlitchText speed={0.4} className="text-[#EA580C]">Paid</GlitchText>{" "}
+              <GlitchText speed={0.4}>Safely.</GlitchText>
             </h1>
             <p className="text-lg text-[#71717A] max-w-xl leading-relaxed mb-10">
               Milestone-driven escrow keeps your money safe until work is delivered. Zero risk for clients. Zero delays for freelancers.
