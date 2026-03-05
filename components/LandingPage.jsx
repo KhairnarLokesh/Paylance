@@ -1,9 +1,8 @@
 "use client";
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { useApp } from "@/context/AppContext";
 import { Button } from "@/components/ui/button";
 import Footer from "@/components/Footer";
-import ProjectCard from "@/components/ProjectCard";
 import Services from "@/components/Services";
 import ScrollAnimation from "@/components/ScrollAnimation";
 import {
@@ -21,16 +20,6 @@ export default function LandingPage() {
   const { setCurrentView, user, logout, notifications } = useApp();
   const unreadCount = notifications?.filter(n => !n.read).length || 0;
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const scrollRef = useRef(null);
-
-  const demoProjects = [
-    { title: "E-commerce Website Development", description: "Build a full-featured online store with product management, secure checkout, and user accounts.", tags: ["React", "Node.js", "MongoDB"], budget: "₹25,000 – ₹40,000", milestones: 3, image: "https://images.unsplash.com/photo-1557821552-17105176677c?auto=format&fit=crop&q=80&w=800", status: "Demo" },
-    { title: "Mobile App for Food Delivery", description: "Develop a cross-platform mobile app for real-time food ordering and delivery tracking.", tags: ["Flutter", "Firebase", "Dart"], budget: "₹35,000 – ₹55,000", milestones: 4, image: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&q=80&w=800", status: "Demo" },
-    { title: "AI Chatbot Integration", description: "Implement an intelligent customer support bot using OpenAI's GPT for automated replies.", tags: ["Python", "OpenAI", "Next.js"], budget: "₹15,000 – ₹25,000", milestones: 2, image: "https://images.unsplash.com/photo-1531746790731-6c087fecd65a?auto=format&fit=crop&q=80&w=800", status: "Demo" },
-    { title: "Portfolio Website for Designer", description: "Create a stunning, high-performance portfolio with smooth animations and case studies.", tags: ["Framer", "React", "Tailwind"], budget: "₹10,000 – ₹18,000", milestones: 2, image: "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&q=80&w=800", status: "Demo" },
-    { title: "SaaS Dashboard Redesign", description: "Modernize a B2B SaaS dashboard with improved data visualization and UX.", tags: ["UI/UX", "Figma", "Next.js"], budget: "₹45,000 – ₹70,000", milestones: 5, image: "https://images.unsplash.com/photo-1551288049-bbbda536339a?auto=format&fit=crop&q=80&w=800", status: "Demo" },
-    { title: "Automated Testing Suite", description: "Design and implement comprehensive end-to-end tests for a large-scale web app.", tags: ["Jest", "Cypress", "Node.js"], budget: "₹20,000 – ₹30,000", milestones: 3, image: "https://images.unsplash.com/photo-1516116216624-53e697fedbea?auto=format&fit=crop&q=80&w=800", status: "Demo" },
-  ];
 
   const stats = [
     { value: "5,200+", label: "Freelancers" },
@@ -65,7 +54,6 @@ export default function LandingPage() {
             {/* Desktop Nav */}
             <div className="hidden md:flex items-center gap-8">
               <div className="flex items-center gap-6 text-sm font-medium text-[#71717A]">
-                <button onClick={() => document.getElementById('demo-projects')?.scrollIntoView({ behavior: 'smooth' })} className="hover:text-white transition-colors">Explore</button>
                 <button onClick={() => document.getElementById('why-paylance')?.scrollIntoView({ behavior: 'smooth' })} className="hover:text-white transition-colors">Why Paylance</button>
                 <button onClick={() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' })} className="hover:text-white transition-colors">Services</button>
               </div>
@@ -132,8 +120,8 @@ export default function LandingPage() {
         {/* Mobile Menu */}
         {isMenuOpen && (
           <div className="md:hidden border-t border-[#2A2A2A] bg-[#0A0A0A] px-6 py-5 space-y-4">
-            {['Explore', 'Why Paylance', 'Services'].map((label, i) => {
-              const ids = ['demo-projects', 'why-paylance', 'services'];
+            {['Why Paylance', 'Services'].map((label, i) => {
+              const ids = ['why-paylance', 'services'];
               return <button key={label} onClick={() => { document.getElementById(ids[i])?.scrollIntoView({ behavior: 'smooth' }); setIsMenuOpen(false); }} className="block w-full text-left text-sm font-medium text-[#71717A] hover:text-white py-1 transition-colors">{label}</button>;
             })}
             {user ? (
@@ -173,9 +161,6 @@ export default function LandingPage() {
             <div className="flex flex-wrap gap-3">
               <button onClick={() => setCurrentView('register')} className="px-6 py-3 bg-[#EA580C] hover:bg-[#C2410C] text-white text-sm font-semibold rounded-lg transition-colors flex items-center gap-2">
                 Start Hiring <ArrowRight className="h-4 w-4" />
-              </button>
-              <button onClick={() => document.getElementById('demo-projects')?.scrollIntoView({ behavior: 'smooth' })} className="px-6 py-3 text-sm font-semibold text-white border border-[#2A2A2A] bg-transparent rounded-lg hover:border-[#EA580C] hover:bg-[#111111] transition-all">
-                Browse Projects
               </button>
             </div>
 
@@ -261,30 +246,6 @@ export default function LandingPage() {
                 </GlareHover>
               </ScrollAnimation>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ─── Demo Projects ─── */}
-      <section id="demo-projects" className="py-24 bg-[#0A0A0A] border-t border-[#2A2A2A]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-10">
-            <p className="text-xs font-semibold uppercase tracking-widest text-[#EA580C] mb-3">Projects</p>
-            <h2 className="text-4xl font-bold text-white tracking-tight">
-              Explore <span className="text-[#EA580C]">Demo</span> Projects
-            </h2>
-            <p className="text-[#71717A] mt-3 text-base max-w-xl">Get inspired by sample project structures across diverse domains.</p>
-          </div>
-          <div ref={scrollRef} className="flex gap-5 overflow-x-auto pb-6 snap-x snap-mandatory no-scrollbar cursor-grab active:cursor-grabbing">
-            {demoProjects.map((project, idx) => (
-              <ScrollAnimation key={idx} delay={idx * 60} className="min-w-[300px] md:min-w-[340px] snap-center">
-                <ProjectCard project={project} />
-              </ScrollAnimation>
-            ))}
-          </div>
-          <div className="flex items-center gap-2 mt-4">
-            <div className="h-px w-8 bg-[#EA580C]" />
-            <p className="text-[10px] text-[#71717A] font-semibold uppercase tracking-widest">Drag to explore</p>
           </div>
         </div>
       </section>
